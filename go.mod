@@ -2,7 +2,10 @@ module chipskein/mocg
 
 go 1.19
 
-require github.com/gizak/termui/v3 v3.1.0
+require (
+	github.com/gizak/termui/v3 v3.1.0
+	github.com/joho/godotenv v1.4.0
+)
 
 require (
 	github.com/mattn/go-runewidth v0.0.13 // indirect
