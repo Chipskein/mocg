@@ -1,4 +1,4 @@
-module chipskein/mogc
+module chipskein/mocg
 
 go 1.19
 

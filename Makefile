@@ -1,2 +1,2 @@
 build:
-	go build -o bin/mogc ./cmd/main.go 
+	go build -o bin/mocg ./cmd/main.go 

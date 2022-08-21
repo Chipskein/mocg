@@ -1,6 +1,6 @@
 package main
 
-import "chipskein/mogc/internals/ui"
+import "chipskein/mocg/internals/ui"
 
 func main() {
 	ui.Draw()
