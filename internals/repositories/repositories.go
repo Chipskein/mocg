@@ -45,3 +45,6 @@ func GetAllFilesFromLocalDirectory(DIRECTORY string) map[string]File {
 	fmt.Println(fmt.Sprintf("Found %d files in directory %s", len(Files), DIRECTORY))
 	return Files
 }
+func HandleFile(file File) {
+
+}

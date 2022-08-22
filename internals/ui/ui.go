@@ -6,32 +6,35 @@ import (
 	"github.com/rivo/tview"
 )
 
-var app *tview.Application
-
-func exit() {
-	app.Stop()
-}
-func handleFile(filename repositories.File) {
-
+type UI struct {
+	app     *tview.Application
+	list    *tview.List
+	mainBox *tview.Box
 }
 
-func createList() *tview.List {
+var tui = UI{}
+
+func renderList() *tview.List {
 	files := repositories.GetAllFilesFromLocalDirectory("")
 	list := tview.NewList()
 	for filename, file := range files {
 		var Iteration_file = file
 		list.AddItem(filename, file.FullPath, '*', func() {
-			handleFile(Iteration_file)
+			repositories.HandleFile(Iteration_file)
 		})
 	}
-	list.AddItem("Quit", "Press to exit", 'q', exit)
+	list.AddItem("Quit", "Press to exit", 'q', KillUI)
 	return list
 }
 
-func Draw() {
-	app = tview.NewApplication()
-	var list = createList()
-	if err := app.SetRoot(list, true).Run(); err != nil {
+func StartUI() {
+
+	tui.app = tview.NewApplication()
+	tui.list = renderList()
+	if err := tui.app.SetRoot(tui.list, true).Run(); err != nil {
 		panic(err)
 	}
+}
+func KillUI() {
+	tui.app.Stop()
 }
