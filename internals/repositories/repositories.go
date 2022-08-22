@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"chipskein/mocg/internals/player"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -46,5 +47,5 @@ func GetAllFilesFromLocalDirectory(DIRECTORY string) map[string]File {
 	return Files
 }
 func HandleFile(file File) {
-
+	player.Play(file.FullPath)
 }
