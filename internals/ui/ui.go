@@ -1,65 +1,37 @@
 package ui
 
 import (
-	"log"
+	"chipskein/mocg/internals/repositories"
 
-	termui "github.com/gizak/termui/v3"
-	"github.com/gizak/termui/v3/widgets"
+	"github.com/rivo/tview"
 )
 
+var app *tview.Application
+
+func exit() {
+	app.Stop()
+}
+func handleFile(filename repositories.File) {
+
+}
+
+func createList() *tview.List {
+	files := repositories.GetAllFilesFromLocalDirectory("")
+	list := tview.NewList()
+	for filename, file := range files {
+		var Iteration_file = file
+		list.AddItem(filename, file.FullPath, '*', func() {
+			handleFile(Iteration_file)
+		})
+	}
+	list.AddItem("Quit", "Press to exit", 'q', exit)
+	return list
+}
+
 func Draw() {
-	if err := termui.Init(); err != nil {
-		log.Fatalf("failed to initialize termui: %v", err)
-	}
-	defer termui.Close()
-
-	l := widgets.NewList()
-	l.Title = "List"
-	l.Rows = []string{
-		"teste1",
-		"teste2",
-	}
-	l.TextStyle = termui.NewStyle(termui.ColorYellow)
-	l.WrapText = false
-	l.SetRect(0, 0, 25, 8)
-
-	termui.Render(l)
-
-	previousKey := ""
-	uiEvents := termui.PollEvents()
-	for {
-		e := <-uiEvents
-		switch e.ID {
-		case "q", "<C-c>":
-			return
-		case "j", "<Down>":
-			l.ScrollDown()
-		case "k", "<Up>":
-			l.ScrollUp()
-		case "<C-d>":
-			l.ScrollHalfPageDown()
-		case "<C-u>":
-			l.ScrollHalfPageUp()
-		case "<C-f>":
-			l.ScrollPageDown()
-		case "<C-b>":
-			l.ScrollPageUp()
-		case "g":
-			if previousKey == "g" {
-				l.ScrollTop()
-			}
-		case "<Home>":
-			l.ScrollTop()
-		case "G", "<End>":
-			l.ScrollBottom()
-		}
-
-		if previousKey == "g" {
-			previousKey = ""
-		} else {
-			previousKey = e.ID
-		}
-
-		termui.Render(l)
+	app = tview.NewApplication()
+	var list = createList()
+	if err := app.SetRoot(list, true).Run(); err != nil {
+		panic(err)
 	}
 }
