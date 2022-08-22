@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
 	"github.com/faiface/beep/vorbis"
 )
@@ -22,8 +23,13 @@ func Play(filepath string) {
 	defer streamer.Close()
 
 	speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
-	speaker.Play(streamer)
-	select {}
+
+	done := make(chan bool)
+	speaker.Play(beep.Seq(streamer, beep.Callback(func() {
+		done <- true
+	})))
+
+	<-done
 }
 func Stop() {
 
