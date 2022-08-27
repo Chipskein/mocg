@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/faiface/beep v1.1.0
 	github.com/joho/godotenv v1.4.0
+	github.com/nsf/termbox-go v1.1.1
 	github.com/rivo/tview v0.0.0-20220812085834-0e6b21a48e96
 )
 
@@ -21,7 +22,7 @@ require (
 	golang.org/x/exp v0.0.0-20190306152737-a1d7652674e8 // indirect
 	golang.org/x/image v0.0.0-20190227222117-0694c2d4d067 // indirect
 	golang.org/x/mobile v0.0.0-20190415191353-3e0bab5405d6 // indirect
-	golang.org/x/sys v0.0.0-20210309074719-68d13333faf2 // indirect
+	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
 	golang.org/x/term v0.0.0-20210220032956-6a3ed077a48d // indirect
 	golang.org/x/text v0.3.6 // indirect
 )
