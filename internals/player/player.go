@@ -19,14 +19,13 @@ type PlayerController struct {
 
 var (
 	pctrl PlayerController
-	done  = make(chan bool)
+	done  = make(chan bool, 100)
 )
 
 func Play(filepath string) {
 	fmt.Println(filepath)
 	if (pctrl != PlayerController{}) {
-		//done <- true
-		log.Println("CAI NESSA PORRA AQUI ARROMBADO")
+		done <- true
 	}
 
 	f, err := os.Open(filepath)
@@ -41,10 +40,12 @@ func Play(filepath string) {
 	defer streamer.Close()
 
 	err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+
 	if err != nil {
-		log.Fatal("[ERROR] Could not init speaker", err)
+		log.Fatalln("[ERROR] Acessing speaker")
 	}
-	ctrl := &beep.Ctrl{Streamer: beep.Loop(-1, streamer), Paused: false}
+
+	ctrl := &beep.Ctrl{Streamer: beep.Loop(1, streamer), Paused: false}
 	volume := &effects.Volume{
 		Streamer: ctrl,
 		Base:     2,
@@ -53,13 +54,15 @@ func Play(filepath string) {
 	}
 
 	pctrl = PlayerController{ctrl: ctrl, volume: volume}
+	speaker.Play(beep.Seq(pctrl.volume))
 
-	speaker.Play(beep.Seq(pctrl.volume, beep.Callback(func() {
-		done <- true
-	})))
-	select {
-	case <-done:
-		log.Println("TOMA NO CU")
+	for {
+		select {
+		case <-done:
+			streamer.Close()
+			speaker.Clear()
+			log.Println("SIGNAL ON DONE CHANNEL")
+		}
 	}
 
 }

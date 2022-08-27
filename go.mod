@@ -5,7 +5,6 @@ go 1.17
 require (
 	github.com/faiface/beep v1.1.0
 	github.com/joho/godotenv v1.4.0
-	github.com/nsf/termbox-go v1.1.1
 	github.com/rivo/tview v0.0.0-20220812085834-0e6b21a48e96
 )
 
