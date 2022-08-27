@@ -2,7 +2,8 @@ package main
 
 import (
 	"chipskein/mocg/internals/player"
-	"fmt"
+	"log"
+	"os"
 
 	tb "github.com/nsf/termbox-go"
 )
@@ -10,23 +11,25 @@ import (
 func main() {
 	err := tb.Init()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	defer tb.Close()
+	var file = "/home/chipskein/Music/Prophecies.ogg"
 	for {
-		fmt.Println("TESTANDO")
 		event := tb.PollEvent()
 		switch {
 		case event.Ch == ',':
-			go player.VolumeDown()
+			//player.VolumeDown()
 		case event.Ch == '.':
-			go player.VolumeUp()
+			//player.VolumeUp()
 		case event.Key == tb.KeyEsc:
-			player.Stop()
+			os.Exit(0)
 		case event.Key == tb.KeySpace:
-			go player.PauseOrResume()
+			//player.PauseOrResume()
 		case event.Key == tb.KeyEnter:
-			go player.Play("/home/chipskein/Music/Prophecies.ogg")
+			go player.Play(file)
+		case event.Key == tb.KeyArrowUp:
+			file = "/home/chipskein/Music/The Perfect Girl.ogg"
 		}
 	}
 }
