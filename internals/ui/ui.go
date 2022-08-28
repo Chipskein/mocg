@@ -4,12 +4,14 @@ import (
 	"chipskein/mocg/internals/repositories"
 	"fmt"
 	"log"
+	"sync"
 	"time"
 
-	ui "github.com/gizak/termui/v3"
+	tui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 )
 
+var wg sync.WaitGroup
 var TEST_DIR = "" //"../../audios"
 
 func getFileList() []string {
@@ -21,72 +23,111 @@ func getFileList() []string {
 	return key_slice
 }
 
+type TUI struct {
+	err               error
+	grid              *tui.Grid
+	ticker            *<-chan time.Time
+	tickerProgressBar *<-chan time.Time
+	uiEvents          <-chan tui.Event
+	progressBar       *widgets.Gauge
+	filelist          *widgets.List
+	p                 *widgets.Paragraph
+	spark             *widgets.SparklineGroup
+}
+
 func StartUI() {
-	if err := ui.Init(); err != nil {
+	if err := tui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
 	}
-	defer ui.Close()
+	defer tui.Close()
 
+	var t = &TUI{}
+	go t.RenderFileList()
+	go t.RenderVolumeMixer()
+	go t.RenderProgressBar()
+	go t.RenderSongInfo()
+	wg.Add(4)
+	wg.Done()
+	time.Sleep(time.Millisecond * 5)
+	t.SetupGrid()
+	t.uiEvents = tui.PollEvents()
+	t.ticker = &time.NewTicker(time.Microsecond).C
+	t.tickerProgressBar = &time.NewTicker(time.Second / 5).C
+
+	t.HandleTUIEvents()
+
+}
+
+func (t *TUI) RenderFileList() {
 	filelist := widgets.NewList()
 	filelist.Rows = getFileList()
 	filelist.Title = TEST_DIR
-	filelist.TitleStyle.Fg = ui.ColorWhite
-	filelist.SelectedRowStyle.Fg = ui.ColorBlack
-	filelist.SelectedRowStyle.Bg = ui.ColorWhite
-	filelist.TextStyle.Fg = ui.ColorMagenta
-
-	data := []float64{4, 2, 1, 6, 3, 9, 1, 4, 2, 15, 14, 9, 8, 6, 10, 13, 15, 12, 10, 5, 3, 6, 1, 7, 10, 10, 14, 13, 6}
-
+	filelist.TitleStyle.Fg = tui.ColorWhite
+	filelist.SelectedRowStyle.Fg = tui.ColorBlack
+	filelist.SelectedRowStyle.Bg = tui.ColorWhite
+	filelist.TextStyle.Fg = tui.ColorMagenta
+	t.filelist = filelist
+}
+func (t *TUI) RenderVolumeMixer() {
+	data := []float64{5, 5, 5, 5, 5, 5}
 	sl0 := widgets.NewSparkline()
-	sl0.Data = data[3:]
-	sl0.LineColor = ui.ColorGreen
-
-	// single
+	sl0.Data = data
+	sl0.LineColor = tui.ColorMagenta
+	sl0.MaxVal = 100
+	sl0.Title = "Volume"
 	slg0 := widgets.NewSparklineGroup(sl0)
-
-	p := widgets.NewParagraph()
-	p.Text = fmt.Sprintf("Filename:%s\n Status:%s\n Time:%s\n Duration:%s\n Loop:%s\n Press H for help\n", "filename.ext", "Playing", "102s", "1m30s", "false")
+	t.spark = slg0
+}
+func (t *TUI) RenderProgressBar() {
 
 	processBar := widgets.NewGauge()
 	processBar.Title = "Status"
-	processBar.TitleStyle.Fg = ui.ColorWhite
+	processBar.TitleStyle.Fg = tui.ColorWhite
 	processBar.Percent = 0
 	processBar.Label = "Music Name"
-	processBar.BarColor = ui.ColorWhite
-	processBar.LabelStyle = ui.NewStyle(ui.ColorCyan)
-
-	grid := ui.NewGrid()
-	termWidth, termHeight := ui.TerminalDimensions()
+	processBar.BarColor = tui.ColorWhite
+	processBar.LabelStyle = tui.NewStyle(tui.ColorCyan)
+	t.progressBar = processBar
+}
+func (t *TUI) RenderSongInfo() {
+	p := widgets.NewParagraph()
+	p.Text = fmt.Sprintf("Filename:%s\n Status:%s\n Time:%s\n Duration:%s\n Loop:%s\n Press H for help\n", "filename.ext", "Playing", "102s", "1m30s", "false")
+	t.p = p
+}
+func (t *TUI) SetupGrid() {
+	grid := tui.NewGrid()
+	termWidth, termHeight := tui.TerminalDimensions()
 	grid.SetRect(0, 0, termWidth, termHeight)
 
 	grid.Set(
-		ui.NewRow(1.8/2,
-			ui.NewCol(1.5/2, filelist),
-			ui.NewCol(0.5/2,
-				ui.NewRow(1.0/2, slg0),
-				ui.NewRow(1.0/2, p),
+		tui.NewRow(1.8/2,
+			tui.NewCol(1.5/2,
+				t.filelist),
+			tui.NewCol(0.5/2,
+				tui.NewRow(0.5/2, t.spark),
+				tui.NewRow(0.5/2, t.p),
+				tui.NewRow(1.0/2, t.p),
 			),
 		),
-		ui.NewRow(0.2/2, processBar),
+		tui.NewRow(0.2/2,
+			t.progressBar),
 	)
-
-	ui.Render(grid)
-
-	tickerCount := 1
-	uiEvents := ui.PollEvents()
-	ticker := time.NewTicker(time.Second / 5).C
+	t.grid = grid
+	t.RenderUI()
+}
+func (t *TUI) HandleTUIEvents() {
 	for {
 		select {
-		case e := <-uiEvents:
+		case e := <-t.uiEvents:
 			switch e.ID {
 			case "q", "<C-c>":
 				return
 			case "<Enter>":
 				//play music file
 			case "<Down>":
-				filelist.ScrollDown()
+				t.filelist.ScrollDown()
 			case "<Up>":
-				filelist.ScrollUp()
+				t.filelist.ScrollUp()
 			case "<Space>":
 				//pause
 			case ",":
@@ -96,21 +137,24 @@ func StartUI() {
 			case "h":
 				//show help
 			case "<Resize>":
-				payload := e.Payload.(ui.Resize)
-				grid.SetRect(0, 0, payload.Width, payload.Height)
-				ui.Clear()
-				ui.Render(grid)
+				payload := e.Payload.(tui.Resize)
+				t.grid.SetRect(0, 0, payload.Width, payload.Height)
+				tui.Clear()
+				t.RenderUI()
 			}
-		case <-ticker:
-			if processBar.Percent == 100 {
-				processBar.Percent = 0
+		case <-*t.tickerProgressBar:
+			if t.progressBar.Percent == 100 {
+				t.progressBar.Percent = 0
 			}
-			if processBar.Percent < 100 {
-				processBar.Percent += 1
+			if t.progressBar.Percent < 100 {
+				t.progressBar.Percent += 1
 			}
-
-			ui.Render(grid)
-			tickerCount++
+		case <-*t.ticker:
+			t.RenderUI()
 		}
 	}
+}
+
+func (t *TUI) RenderUI() {
+	tui.Render(t.grid)
 }
