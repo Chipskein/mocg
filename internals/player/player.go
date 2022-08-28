@@ -4,86 +4,83 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/effects"
 	"github.com/faiface/beep/speaker"
-	"github.com/faiface/beep/vorbis"
 )
 
 type PlayerController struct {
-	ctrl   *beep.Ctrl
-	volume *effects.Volume
+	ctrl       *beep.Ctrl
+	volume     *effects.Volume
+	samplerate beep.SampleRate
+	streamer   beep.StreamSeekCloser
+	resampler  *beep.Resampler
+	done       *chan bool
+	file       *os.File
 }
 
-var (
-	pctrl PlayerController
-	done  = make(chan bool, 100)
-)
+const VOLUME = 0.1
+const DEFAULT_SAMPLE beep.SampleRate = 48000
 
-func Play(filepath string) {
-	fmt.Println(filepath)
-	if (pctrl != PlayerController{}) {
-		done <- true
-	}
+var err_speaker = speaker.Init(DEFAULT_SAMPLE, DEFAULT_SAMPLE.N(time.Second/10))
+var wg sync.WaitGroup
 
-	f, err := os.Open(filepath)
+func (p *PlayerController) Play() {
+	speaker.Play(beep.Seq(p.volume, beep.Callback(func() {
+		*p.done <- true
+	})))
+	go func() {
+	loop:
+		for {
+			select {
+			case <-*p.done:
+				speaker.Clear()
+				break loop
+			case <-time.After(time.Second):
+				fmt.Println(p.file.Name(), p.samplerate.D(p.streamer.Position()).Round(time.Second))
+			}
+
+		}
+	}()
+	wg.Add(1)
+	wg.Done()
+	wg.Wait()
+	return
+}
+func (p *PlayerController) PauseOrResume() {
+	speaker.Lock()
+	p.ctrl.Paused = !p.ctrl.Paused
+	speaker.Unlock()
+}
+func (p *PlayerController) VolumeDown() {
+	speaker.Lock()
+	p.volume.Volume -= VOLUME
+	speaker.Unlock()
+}
+func (p *PlayerController) VolumeUp() {
+	speaker.Lock()
+	p.volume.Volume += VOLUME
+	speaker.Unlock()
+}
+func (p *PlayerController) Stop() {
+	*p.done <- true
+}
+
+func InitPlayer(sampleRate beep.SampleRate, streamer beep.StreamSeekCloser, f *os.File) *PlayerController {
+	ctrl := &beep.Ctrl{Streamer: beep.Loop(1, streamer)}
+	resampler := beep.ResampleRatio(4, 1, ctrl)
+	volume := &effects.Volume{Streamer: resampler, Base: 2}
+	done := make(chan bool, 1)
+	return &PlayerController{samplerate: sampleRate, streamer: streamer, ctrl: ctrl, resampler: resampler, volume: volume, done: &done, file: f}
+}
+func ReadFile(file string) *os.File {
+	fmt.Println(file)
+	f, err := os.Open(file)
 	if err != nil {
 		log.Fatal("[ERROR] Could not read file", err)
 	}
-
-	streamer, format, err := vorbis.Decode(f)
-	if err != nil {
-		log.Fatal("[ERROR] Could not decode file", err)
-	}
-	defer streamer.Close()
-
-	err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
-
-	if err != nil {
-		log.Fatalln("[ERROR] Acessing speaker")
-	}
-
-	ctrl := &beep.Ctrl{Streamer: beep.Loop(1, streamer), Paused: false}
-	volume := &effects.Volume{
-		Streamer: ctrl,
-		Base:     2,
-		Volume:   0,
-		Silent:   false,
-	}
-
-	pctrl = PlayerController{ctrl: ctrl, volume: volume}
-	speaker.Play(beep.Seq(pctrl.volume))
-
-	for {
-		select {
-		case <-done:
-			streamer.Close()
-			speaker.Clear()
-			log.Println("SIGNAL ON DONE CHANNEL")
-		}
-	}
-
-}
-func PauseOrResume() {
-	if (pctrl != PlayerController{}) {
-		speaker.Lock()
-		pctrl.ctrl.Paused = !pctrl.ctrl.Paused
-		speaker.Unlock()
-	}
-}
-func VolumeDown() {
-	if (pctrl != PlayerController{}) {
-		speaker.Lock()
-		pctrl.volume.Volume -= 0.1
-		speaker.Unlock()
-	}
-}
-func VolumeUp() {
-	if (pctrl != PlayerController{}) {
-		speaker.Lock()
-		pctrl.volume.Volume += 0.1
-		speaker.Unlock()
-	}
+	return f
 }
