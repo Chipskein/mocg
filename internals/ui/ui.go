@@ -1,7 +1,6 @@
 package ui
 
 import (
-	"chipskein/mocg/internals/repositories"
 	"fmt"
 	"log"
 	"sync"
@@ -12,19 +11,19 @@ import (
 )
 
 var wg sync.WaitGroup
-var TEST_DIR = "" //"../../audios"
+var TEST_DIR = ""
 
 func getFileList() []string {
-	var key_slice []string
-	files, _ := repositories.GetAllFilesFromLocalDirectory(TEST_DIR)
-	for key := range files {
-		key_slice = append(key_slice, key)
-	}
-	return key_slice
+	/*
+		var key_slice []string
+		files, _ := repositories.GetAllFilesFromLocalDirectory(TEST_DIR)
+		for key := range files {
+			key_slice = append(key_slice, key)
+		}*/
+	return []string{} //key_slice
 }
 
 type TUI struct {
-	err               error
 	grid              *tui.Grid
 	ticker            *<-chan time.Time
 	tickerProgressBar *<-chan time.Time

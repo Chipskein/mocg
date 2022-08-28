@@ -2,56 +2,69 @@ package repositories
 
 import (
 	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"path/filepath"
 )
 
 type File struct {
-	Name      string
-	Size      int64
-	FullPath  string
-	Extension string
+	Name         string
+	Size         int64
+	FullPath     string
+	Extension    string
+	IsADirectory bool
+}
+type LocalRepository struct {
+	DEFAULT_DIRECTORY string
+	CURRENT_DIRECTORY string
+	Files             map[string]File
 }
 
-var DEFAULT_DIRECTORY = "/home/chipskein/Music"
-var CURRENT_DIRECTORY string
-
-func GetAllFilesFromLocalDirectory(DIRECTORY string) (map[string]File, error) {
-
-	fmt.Println(fmt.Sprintf("WORKING WITH DIRECTORY => %s", DIRECTORY))
-	files, err := ioutil.ReadDir(DIRECTORY)
+func (r *LocalRepository) ListFiles() error {
+	files, err := r.ReadDirectoryOrDefault()
 	if err != nil {
-		fmt.Println(fmt.Sprintf("[ERROR] %s Directory not found", DIRECTORY))
-		DIRECTORY = DEFAULT_DIRECTORY
-		fmt.Println(fmt.Sprintf("[WARNING] USING default directory insted %s ", DIRECTORY))
+		return err
 	}
-	files, err = ioutil.ReadDir(DIRECTORY)
+	filelist := make(map[string]File)
+	for _, file := range files {
+		var listedfile File
+		listedfile.Name = file.Name()
+		listedfile.FullPath = fmt.Sprintf("%s/%s", r.CURRENT_DIRECTORY, listedfile.Name)
+		listedfile.Size = file.Size()
+		listedfile.IsADirectory = file.IsDir()
+		listedfile.Extension = filepath.Ext(listedfile.FullPath)
+
+		filelist[listedfile.Name] = listedfile
+	}
+	r.Files = filelist
+	return nil
+}
+func (r *LocalRepository) ReadDirectoryOrDefault() ([]fs.FileInfo, error) {
+	absolute, _ := filepath.Abs(r.CURRENT_DIRECTORY)
+	r.CURRENT_DIRECTORY = absolute
+	default_absolute, _ := filepath.Abs(r.DEFAULT_DIRECTORY)
+	r.DEFAULT_DIRECTORY = default_absolute
+
+	files, err := ioutil.ReadDir(r.CURRENT_DIRECTORY)
+	if err != nil {
+		r.CURRENT_DIRECTORY = r.DEFAULT_DIRECTORY
+	}
+	files, err = ioutil.ReadDir(r.CURRENT_DIRECTORY)
 	if err != nil {
 		return nil, err
 	}
 
-	Files := make(map[string]File)
-	for _, file := range files {
-		if !file.IsDir() {
-			var filename = file.Name()
-
-			var fullpath = fmt.Sprintf("%s/%s", DIRECTORY, filename)
-			var extension = filepath.Ext(fullpath)
-			if !HasSupport(extension) {
-				//fmt.Printf("%s: Extension not supported\n", filename)
-				continue
-			}
-			var filesize = file.Size()
-			var MusicFile = File{filename, filesize, fullpath, extension}
-			Files[filename] = MusicFile
-		}
-	}
-	fmt.Println(fmt.Sprintf("Found %d files in directory %s", len(Files), DIRECTORY))
-	return Files, nil
+	return files, nil
 }
-func HasSupport(extension string) bool {
+func IsExtesionSupported(extension string) bool {
 	switch extension {
 	case ".ogg":
+		return true
+	case ".wav":
+		return true
+	case ".mp3":
+		return true
+	case ".flac":
 		return true
 	default:
 		return false
