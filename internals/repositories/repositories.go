@@ -14,6 +14,7 @@ type File struct {
 }
 
 var DEFAULT_DIRECTORY = "/home/chipskein/Music"
+var CURRENT_DIRECTORY string
 
 func GetAllFilesFromLocalDirectory(DIRECTORY string) (map[string]File, error) {
 
@@ -37,7 +38,7 @@ func GetAllFilesFromLocalDirectory(DIRECTORY string) (map[string]File, error) {
 			var fullpath = fmt.Sprintf("%s/%s", DIRECTORY, filename)
 			var extension = filepath.Ext(fullpath)
 			if !HasSupport(extension) {
-				fmt.Printf("%s: Extension not supported\n", filename)
+				//fmt.Printf("%s: Extension not supported\n", filename)
 				continue
 			}
 			var filesize = file.Size()
