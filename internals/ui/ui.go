@@ -1,8 +1,6 @@
 package ui
 
 import (
-	"chipskein/mocg/internals/repositories"
-
 	"github.com/rivo/tview"
 )
 
@@ -15,16 +13,7 @@ type UI struct {
 var tui = UI{}
 
 func renderList() *tview.List {
-	files := repositories.GetAllFilesFromLocalDirectory("")
-	list := tview.NewList()
-	for filename, file := range files {
-		var Iteration_file = file
-		list.AddItem(filename, file.FullPath, '*', func() {
-			repositories.HandleFile(Iteration_file)
-		})
-	}
-	list.AddItem("Quit", "Press to exit", 'q', KillUI)
-	return list
+	return renderList()
 }
 
 func StartUI() {
