@@ -8,5 +8,7 @@ test-repositories:
 	go test ./internals/repositories/repositories.go ./internals/repositories/repositories_test.go -v
 test-ui:
 	go test ./internals/ui/ui.go ./internals/ui/ui_test.go -v
+test-decoder:
+	go test ./internals/decoder/decoder.go ./internals/decoder/decoder_test.go -v
 
 	
