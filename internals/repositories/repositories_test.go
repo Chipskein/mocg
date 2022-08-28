@@ -34,3 +34,20 @@ func TestReadDirectory(t *testing.T) {
 		}
 	}
 }
+func TestListFiles(t *testing.T) {
+	var tests = []TestDirectories{
+		{LocalRepository{"/home/chipskein/Music", "/home/chipskein/sources/mocg/audios/", nil}, false},
+		{LocalRepository{"/home/chipskein/Music", "../", nil}, false},
+		{LocalRepository{"/home/chipskein/Music", "/wrong/path", nil}, false},
+	}
+	for _, test := range tests {
+		err := test.repository.ListFiles()
+		if err != nil {
+			t.Errorf("\n[ERRROR]Could not read Directory %s\n", test.repository.CURRENT_DIRECTORY)
+			continue
+		}
+		for _, file := range test.repository.Files {
+			t.Logf("\nFilename:%s\nExtension:%s\nIsADirectory:%t\nFullPath:%s\nSize:%d\n", file.Name, file.Extension, file.IsADirectory, file.FullPath, file.Size)
+		}
+	}
+}

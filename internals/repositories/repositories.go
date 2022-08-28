@@ -28,11 +28,15 @@ func (r *LocalRepository) ListFiles() error {
 	filelist := make(map[string]File)
 	for _, file := range files {
 		var listedfile File
-		listedfile.Name = file.Name()
-		listedfile.FullPath = fmt.Sprintf("%s/%s", r.CURRENT_DIRECTORY, listedfile.Name)
 		listedfile.Size = file.Size()
 		listedfile.IsADirectory = file.IsDir()
+		listedfile.Name = file.Name()
+		listedfile.FullPath = fmt.Sprintf("%s/%s", r.CURRENT_DIRECTORY, listedfile.Name)
 		listedfile.Extension = filepath.Ext(listedfile.FullPath)
+
+		if !listedfile.IsADirectory && !isExtesionSupported(listedfile.Extension) {
+			continue
+		}
 
 		filelist[listedfile.Name] = listedfile
 	}
@@ -56,7 +60,7 @@ func (r *LocalRepository) ReadDirectoryOrDefault() ([]fs.FileInfo, error) {
 
 	return files, nil
 }
-func IsExtesionSupported(extension string) bool {
+func isExtesionSupported(extension string) bool {
 	switch extension {
 	case ".ogg":
 		return true
