@@ -48,7 +48,7 @@ func (r *LocalRepository) MapFiles() error {
 func (r *LocalRepository) ListFiles() []string {
 
 	var key_slice []string
-
+	key_slice = append(key_slice, "../")
 	err := r.MapFiles()
 	if err != nil {
 		log.Fatalln("Could not map files ", err)

@@ -6,6 +6,7 @@ import (
 	"chipskein/mocg/internals/repositories"
 	"fmt"
 	"log"
+	"path"
 	"sync"
 	"time"
 
@@ -148,10 +149,16 @@ func (t *TUI) HandleTUIEvents() {
 	}
 }
 func (t *TUI) HandleSelectedFile(filename string) {
+	if filename == "../" {
+		parentPath := path.Dir(t.repo.CURRENT_DIRECTORY)
+		t.repo.CURRENT_DIRECTORY = parentPath
+		t.filelist.Rows = t.repo.ListFiles()
+		t.filelist.Title = t.repo.CURRENT_DIRECTORY
+		return
+	}
 	var file = t.repo.Files[filename]
 	if file.IsADirectory {
 		t.repo.CURRENT_DIRECTORY = file.FullPath
-		t.repo.MapFiles()
 		t.filelist.Rows = t.repo.ListFiles()
 		t.filelist.Title = t.repo.CURRENT_DIRECTORY
 		return
