@@ -2,7 +2,6 @@ package player
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"sync"
 	"time"
@@ -75,12 +74,4 @@ func InitPlayer(sampleRate beep.SampleRate, streamer beep.StreamSeekCloser, f *o
 	volume := &effects.Volume{Streamer: resampler, Base: 2}
 	done := make(chan bool, 1)
 	return &PlayerController{samplerate: sampleRate, streamer: streamer, ctrl: ctrl, resampler: resampler, volume: volume, done: &done, file: f}
-}
-func ReadFile(file string) *os.File {
-	fmt.Println(file)
-	f, err := os.Open(file)
-	if err != nil {
-		log.Fatal("[ERROR] Could not read file", err)
-	}
-	return f
 }

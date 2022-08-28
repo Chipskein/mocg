@@ -8,6 +8,9 @@ type TestDirectories struct {
 	repository LocalRepository
 	shouldFail bool
 }
+type TestFiles struct {
+	fullpath string
+}
 
 func TestReadDirectory(t *testing.T) {
 	var tests = []TestDirectories{
@@ -50,4 +53,19 @@ func TestListFiles(t *testing.T) {
 			t.Logf("\nFilename:%s\nExtension:%s\nIsADirectory:%t\nFullPath:%s\nSize:%d\n", file.Name, file.Extension, file.IsADirectory, file.FullPath, file.Size)
 		}
 	}
+}
+func TestReadFIle(t *testing.T) {
+
+	f := ReadFile("../../audios/music1.ogg")
+	defer f.Close()
+	b1 := make([]byte, 50)
+	n1, _ := f.Read(b1)
+	t.Logf("%d bytes: %s\n", n1, string(b1[:n1]))
+	o2, _ := f.Seek(51, 0)
+	b2 := make([]byte, 2)
+	n2, _ := f.Read(b2)
+	t.Logf("%d bytes @ %d: ", n2, o2)
+	t.Logf("%v\n", string(b2[:n2]))
+
+	f.Close()
 }

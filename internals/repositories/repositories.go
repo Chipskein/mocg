@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io/fs"
 	"io/ioutil"
+	"log"
+	"os"
 	"path/filepath"
 )
 
@@ -73,4 +75,12 @@ func isExtesionSupported(extension string) bool {
 	default:
 		return false
 	}
+}
+func ReadFile(file string) *os.File {
+	fmt.Println(file)
+	f, err := os.Open(file)
+	if err != nil {
+		log.Fatal("[ERROR] Could not read file", err)
+	}
+	return f
 }

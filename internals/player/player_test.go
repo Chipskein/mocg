@@ -4,6 +4,8 @@ import (
 	"testing"
 	"time"
 
+	r "chipskein/mocg/internals/repositories"
+
 	"github.com/faiface/beep/vorbis"
 )
 
@@ -12,7 +14,7 @@ const MUSIC_TIMEOUT = time.Second * 10
 func TestPlay(T *testing.T) {
 	var filename = "../../audios/music1.ogg"
 	T.Logf("Play a song file for %d seconds them stop", MUSIC_TIMEOUT)
-	var f = ReadFile(filename)
+	var f = r.ReadFile(filename)
 	streamer, format, err := vorbis.Decode(f)
 	if err != nil {
 		T.Fatalf("Could not Decode %s ERROR %s", filename, err)
@@ -36,7 +38,7 @@ func TestPlay2(T *testing.T) {
 	var filename = "../../audios/music2.ogg"
 	T.Logf("Play a song file for %d seconds them stop", MUSIC_TIMEOUT)
 
-	var f = ReadFile(filename)
+	var f = r.ReadFile(filename)
 	streamer, format, err := vorbis.Decode(f)
 	if err != nil {
 		T.Fatalf("[ERROR] Could not decode %s Error %s", filename, err)
@@ -64,7 +66,7 @@ func TestVolume(T *testing.T) {
 
 	T.Logf("Play a song file for %d seconds and change volume up and down them stop", MUSIC_TIMEOUT)
 
-	var f = ReadFile(filename)
+	var f = r.ReadFile(filename)
 	streamer, format, err := vorbis.Decode(f)
 	if err != nil {
 		T.Fatalf("[ERROR] Could not decode %s Error %s", filename, err)
@@ -107,7 +109,7 @@ func TestPause(T *testing.T) {
 	var filename = "../../audios/music1.ogg"
 	T.Logf("Play a song file for %d seconds and pause/resume during execution", MUSIC_TIMEOUT)
 
-	var f = ReadFile(filename)
+	var f = r.ReadFile(filename)
 	streamer, format, err := vorbis.Decode(f)
 	if err != nil {
 		T.Fatalf("[ERROR] Could not decode %s Error %s", filename, err)
