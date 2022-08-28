@@ -56,7 +56,7 @@ func TestMapFiles(t *testing.T) {
 }
 func TestReadFIle(t *testing.T) {
 
-	f := ReadFile("../../audios/music1.ogg")
+	f := ReadFile("../testAudios/ogg/music1.ogg")
 	defer f.Close()
 	b1 := make([]byte, 50)
 	n1, _ := f.Read(b1)

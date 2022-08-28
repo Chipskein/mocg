@@ -90,7 +90,6 @@ func isExtesionSupported(extension string) bool {
 	}
 }
 func ReadFile(file string) *os.File {
-	fmt.Println(file)
 	f, err := os.Open(file)
 	if err != nil {
 		log.Fatal("[ERROR] Could not read file", err)

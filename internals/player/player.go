@@ -22,9 +22,11 @@ type PlayerController struct {
 }
 
 const VOLUME = 0.1
-const DEFAULT_SAMPLE beep.SampleRate = 48000
 
+/*SEGFAULT when reinit speaker */
+var DEFAULT_SAMPLE beep.SampleRate = 48000
 var err_speaker = speaker.Init(DEFAULT_SAMPLE, DEFAULT_SAMPLE.N(time.Second/10))
+
 var wg sync.WaitGroup
 
 func (p *PlayerController) Play() {

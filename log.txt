@@ -1,0 +1,39 @@
+go test ./internals/ui/ui.go ./internals/ui/ui_test.go -v
+=== RUN   TestUI
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 1s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 2s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 3s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 4s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 5s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 7s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 8s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 9s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 10s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 11s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 12s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 13s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 14s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 15s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 16s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 17s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 19s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 20s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 21s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 22s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 23s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 24s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 25s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 26s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 27s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 28s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 30s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 31s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 32s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 33s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 34s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music3.ogg 35s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music1.ogg 1s
+/home/chipskein/sources/mocg/internals/testAudios/ogg/music2.ogg 1s
+--- PASS: TestUI (44.74s)
+PASS
+ok  	command-line-arguments	44.748s

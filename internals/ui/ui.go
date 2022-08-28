@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"chipskein/mocg/internals/decoder"
 	"chipskein/mocg/internals/player"
 	"chipskein/mocg/internals/repositories"
 	"fmt"
@@ -34,7 +35,7 @@ func StartUI() {
 	defer tui.Close()
 
 	var t = &TUI{}
-	t.repo = &repositories.LocalRepository{CURRENT_DIRECTORY: "/home/chipskein/Music/", DEFAULT_DIRECTORY: "/home/chipskein/sources/mocg/audios/"}
+	t.repo = &repositories.LocalRepository{CURRENT_DIRECTORY: "../testAudios", DEFAULT_DIRECTORY: "/home/chipskein/Music"}
 
 	go t.RenderFileList()
 	go t.RenderVolumeMixer()
@@ -117,19 +118,17 @@ func (t *TUI) HandleTUIEvents() {
 			case "q", "<C-c>":
 				return
 			case "<Enter>":
-				//play music file
+				t.HandleSelectedFile(t.filelist.Rows[t.filelist.SelectedRow])
 			case "<Down>":
 				t.filelist.ScrollDown()
 			case "<Up>":
 				t.filelist.ScrollUp()
 			case "<Space>":
-				//pause
+				go t.player.PauseOrResume()
 			case ",":
-				//volumedown
+				go t.player.VolumeDown()
 			case ".":
-				//volumeup
-			case "h":
-				//show help
+				go t.player.VolumeUp()
 			case "<Resize>":
 				payload := e.Payload.(tui.Resize)
 				t.grid.SetRect(0, 0, payload.Width, payload.Height)
@@ -148,7 +147,24 @@ func (t *TUI) HandleTUIEvents() {
 		}
 	}
 }
+func (t *TUI) HandleSelectedFile(filename string) {
+	var file = t.repo.Files[filename]
+	if file.IsADirectory {
+		t.repo.CURRENT_DIRECTORY = file.FullPath
+		t.repo.MapFiles()
+		t.filelist.Rows = t.repo.ListFiles()
+		t.filelist.Title = t.repo.CURRENT_DIRECTORY
+		return
+	}
+	if t.player != nil {
+		t.player.Stop()
+	}
+	var f = repositories.ReadFile(file.FullPath)
+	streamer, format, _ := decoder.Decode(f, file.Extension)
 
+	t.player = player.InitPlayer(format.SampleRate, streamer, f)
+	go t.player.Play()
+}
 func (t *TUI) RenderUI() {
 	tui.Render(t.grid)
 }

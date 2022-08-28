@@ -1,6 +1,7 @@
 package decoder
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/faiface/beep"
@@ -38,4 +39,18 @@ func DecodeMp3(f *os.File) (beep.StreamSeekCloser, beep.Format, error) {
 		return nil, beep.Format{}, err
 	}
 	return streamer, format, nil
+}
+func Decode(f *os.File, extensions string) (beep.StreamSeekCloser, beep.Format, error) {
+	switch extensions {
+	case ".ogg":
+		return DecodeOgg(f)
+	case ".flac":
+		return DecodeFlac(f)
+	case ".mp3":
+		return DecodeMp3(f)
+	case ".wav":
+		return DecodeWav(f)
+	default:
+		return nil, beep.Format{}, fmt.Errorf("Invalid extension %s", extensions)
+	}
 }
