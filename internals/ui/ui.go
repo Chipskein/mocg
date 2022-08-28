@@ -17,16 +17,15 @@ import (
 var wg sync.WaitGroup
 
 type TUI struct {
-	grid              *tui.Grid
-	ticker            *<-chan time.Time
-	tickerProgressBar *<-chan time.Time
-	uiEvents          <-chan tui.Event
-	progressBar       *widgets.Gauge
-	filelist          *widgets.List
-	p                 *widgets.Paragraph
-	spark             *widgets.SparklineGroup
-	repo              *repositories.LocalRepository
-	player            *player.PlayerController
+	grid        *tui.Grid
+	ticker      *<-chan time.Time
+	uiEvents    <-chan tui.Event
+	progressBar *widgets.Gauge
+	filelist    *widgets.List
+	p           *widgets.Paragraph
+	spark       *widgets.SparklineGroup
+	repo        *repositories.LocalRepository
+	player      *player.PlayerController
 }
 
 func StartUI() {
@@ -48,7 +47,6 @@ func StartUI() {
 	t.SetupGrid()
 	t.uiEvents = tui.PollEvents()
 	t.ticker = &time.NewTicker(time.Microsecond).C
-	t.tickerProgressBar = &time.NewTicker(time.Second / 5).C
 
 	t.HandleTUIEvents()
 
@@ -126,6 +124,12 @@ func (t *TUI) HandleTUIEvents() {
 				t.filelist.ScrollUp()
 			case "<Space>":
 				go t.player.PauseOrResume()
+				if !t.player.Ctrl.Paused {
+					t.progressBar.Title = "Paused ||"
+				} else {
+					t.progressBar.Title = "Playing >"
+				}
+				t.RenderUI()
 			case ",":
 				go t.player.VolumeDown()
 			case ".":
@@ -136,13 +140,7 @@ func (t *TUI) HandleTUIEvents() {
 				tui.Clear()
 				t.RenderUI()
 			}
-		case <-*t.tickerProgressBar:
-			if t.progressBar.Percent == 100 {
-				t.progressBar.Percent = 0
-			}
-			if t.progressBar.Percent < 100 {
-				t.progressBar.Percent += 1
-			}
+
 		case <-*t.ticker:
 			t.RenderUI()
 		}
@@ -171,6 +169,9 @@ func (t *TUI) HandleSelectedFile(filename string) {
 
 	t.player = player.InitPlayer(format.SampleRate, streamer, f)
 	go t.player.Play()
+	t.progressBar.Title = "Playing >"
+	t.progressBar.Label = filename
+
 }
 func (t *TUI) RenderUI() {
 	tui.Render(t.grid)
