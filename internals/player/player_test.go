@@ -12,7 +12,7 @@ import (
 const MUSIC_TIMEOUT = time.Second * 10
 
 func TestPlay(T *testing.T) {
-	var filename = "../../audios/music1.ogg"
+	var filename = "../testAudios/ogg/music1.ogg"
 	T.Logf("Play a song file for %d seconds them stop", MUSIC_TIMEOUT)
 	var f = r.ReadFile(filename)
 	streamer, format, err := vorbis.Decode(f)
@@ -35,7 +35,7 @@ func TestPlay(T *testing.T) {
 }
 
 func TestPlay2(T *testing.T) {
-	var filename = "../../audios/music2.ogg"
+	var filename = "../testAudios/ogg/music2.ogg"
 	T.Logf("Play a song file for %d seconds them stop", MUSIC_TIMEOUT)
 
 	var f = r.ReadFile(filename)
@@ -59,7 +59,7 @@ func TestPlay2(T *testing.T) {
 
 }
 func TestVolume(T *testing.T) {
-	var filename = "../../audios/music3.ogg"
+	var filename = "../testAudios/ogg/music3.ogg"
 	var MUSIC_TIMEOUT = time.Second * 20
 	var MAX_VOLUME_UP = 35
 	var MAX_VOLUME_DOWN = 50
@@ -106,7 +106,7 @@ func TestVolume(T *testing.T) {
 	wg.Wait()
 }
 func TestPause(T *testing.T) {
-	var filename = "../../audios/music1.ogg"
+	var filename = "../testAudios/ogg/music1.ogg"
 	T.Logf("Play a song file for %d seconds and pause/resume during execution", MUSIC_TIMEOUT)
 
 	var f = r.ReadFile(filename)
