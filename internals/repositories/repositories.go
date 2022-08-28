@@ -22,7 +22,7 @@ type LocalRepository struct {
 	Files             map[string]File
 }
 
-func (r *LocalRepository) ListFiles() error {
+func (r *LocalRepository) MapFiles() error {
 	files, err := r.ReadDirectoryOrDefault()
 	if err != nil {
 		return err
@@ -44,6 +44,19 @@ func (r *LocalRepository) ListFiles() error {
 	}
 	r.Files = filelist
 	return nil
+}
+func (r *LocalRepository) ListFiles() []string {
+
+	var key_slice []string
+
+	err := r.MapFiles()
+	if err != nil {
+		log.Fatalln("Could not map files ", err)
+	}
+	for key := range r.Files {
+		key_slice = append(key_slice, key)
+	}
+	return key_slice
 }
 func (r *LocalRepository) ReadDirectoryOrDefault() ([]fs.FileInfo, error) {
 	absolute, _ := filepath.Abs(r.CURRENT_DIRECTORY)

@@ -37,14 +37,14 @@ func TestReadDirectory(t *testing.T) {
 		}
 	}
 }
-func TestListFiles(t *testing.T) {
+func TestMapFiles(t *testing.T) {
 	var tests = []TestDirectories{
 		{LocalRepository{"/home/chipskein/Music", "/home/chipskein/sources/mocg/audios/", nil}, false},
 		{LocalRepository{"/home/chipskein/Music", "../", nil}, false},
 		{LocalRepository{"/home/chipskein/Music", "/wrong/path", nil}, false},
 	}
 	for _, test := range tests {
-		err := test.repository.ListFiles()
+		err := test.repository.MapFiles()
 		if err != nil {
 			t.Errorf("\n[ERRROR]Could not read Directory %s\n", test.repository.CURRENT_DIRECTORY)
 			continue

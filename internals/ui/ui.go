@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"chipskein/mocg/internals/player"
+	"chipskein/mocg/internals/repositories"
 	"fmt"
 	"log"
 	"sync"
@@ -11,17 +13,6 @@ import (
 )
 
 var wg sync.WaitGroup
-var TEST_DIR = ""
-
-func getFileList() []string {
-	/*
-		var key_slice []string
-		files, _ := repositories.GetAllFilesFromLocalDirectory(TEST_DIR)
-		for key := range files {
-			key_slice = append(key_slice, key)
-		}*/
-	return []string{} //key_slice
-}
 
 type TUI struct {
 	grid              *tui.Grid
@@ -32,6 +23,8 @@ type TUI struct {
 	filelist          *widgets.List
 	p                 *widgets.Paragraph
 	spark             *widgets.SparklineGroup
+	repo              *repositories.LocalRepository
+	player            *player.PlayerController
 }
 
 func StartUI() {
@@ -41,6 +34,8 @@ func StartUI() {
 	defer tui.Close()
 
 	var t = &TUI{}
+	t.repo = &repositories.LocalRepository{CURRENT_DIRECTORY: "/home/chipskein/Music/", DEFAULT_DIRECTORY: "/home/chipskein/sources/mocg/audios/"}
+
 	go t.RenderFileList()
 	go t.RenderVolumeMixer()
 	go t.RenderProgressBar()
@@ -59,8 +54,8 @@ func StartUI() {
 
 func (t *TUI) RenderFileList() {
 	filelist := widgets.NewList()
-	filelist.Rows = getFileList()
-	filelist.Title = TEST_DIR
+	filelist.Rows = t.repo.ListFiles()
+	filelist.Title = t.repo.CURRENT_DIRECTORY
 	filelist.TitleStyle.Fg = tui.ColorWhite
 	filelist.SelectedRowStyle.Fg = tui.ColorBlack
 	filelist.SelectedRowStyle.Bg = tui.ColorWhite
