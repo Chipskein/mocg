@@ -1,10 +1,10 @@
-# MOCG ( Music on console with Go )
-<img src="https://images.squarespace-cdn.com/content/v1/5e10bdc20efb8f0d169f85f9/1590751925678-5XVSVXMC2BX38RNKKO19/music.png" style="width:160px;">
+<div align="center">
+  <img src="https://images.squarespace-cdn.com/content/v1/5e10bdc20efb8f0d169f85f9/1590751925678-5XVSVXMC2BX38RNKKO19/music.png" style="width:160px;">
+</div>
 
+# MOCG ( Music on console with Go )
 ## Index
 * [Demo](#demo)
-   * [Alacritty](#alacritty)
-    * [TTY](#tty)
 * [Description](#description)
 * [Explanation](#explanation)
     * [What's MOC](#what-is-moc)
@@ -19,8 +19,14 @@
 * [License](#license)
 
 ## Demo
-    ![demo-gif](https://raw.githubusercontent.com/Chipskein/mocg/main/screenshots/demo.gif)
+  
+  <div align="center">
+    <img src="https://raw.githubusercontent.com/Chipskein/mocg/main/screenshots/demo.gif">
+  </div>
+  
+  
 ## Description
+  
 ## Explanation
 * #### What is MOC
   [Music On Console (MOC)](https://github.com/jonsafari/mocp) is an ncurses-based console audio player for Linux/UNIX.It is designed to be powerful and easy to use, with an interface inspired by the Midnight Commander console file manager. [[See more]](https://en.wikipedia.org/wiki/Music_on_Console)
@@ -53,11 +59,4 @@
 * [termui](https://github.com/gizak/termui)
 ## Screenshots
 ## License
-* [MIT](https://raw.githubusercontent.com/Chipskein/mocg/main/LICENSE)
-
-
-
-
-  
-
-
+* [MIT](https://raw.githubusercontent.com/Chipskein/mocg/main/LICENSE?token=GHSAT0AAAAAABXMZE7Q6FPS4YQZUACJXPSGYYNICUA)
