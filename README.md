@@ -20,14 +20,13 @@
 * [License](#license)
 
 ## Demo
-* #### tty
-* #### alacritty
+* #### Alacritty
+* #### TTY
 ## Description
 ## Explanation
 * #### What is MOC
 * #### Keyboard Shortcuts
 * #### Config File
-
 ## How to install
 ## How to run
 ## Music Samples Test
