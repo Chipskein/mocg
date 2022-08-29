@@ -21,7 +21,9 @@
 
 ## Demo
 * #### Alacritty
+  ![teste](https://miro.medium.com/max/1400/1*zGZSsGmCMrAF3PEkrvUgKg.gif)
 * #### TTY
+  ![teste](https://miro.medium.com/max/1400/1*zGZSsGmCMrAF3PEkrvUgKg.gif)
 ## Description
 ## Explanation
 * #### What is MOC
