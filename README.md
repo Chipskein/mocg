@@ -26,8 +26,22 @@
 ## Explanation
 * #### What is MOC
 * #### Keyboard Shortcuts
-* #### Config File
+  | **Key** 	        | **Description**                         |
+  |-----------------	|-----------------------------------------|
+  | ENTER            	| Play Music File or Access Directory     |
+  | SPACE            	| Pause or Resume Music Track             |
+  | .               	| Volume Up       	                      |
+  | ,               	| Volume Down                             |
+  | q               	| Exit MOCG UI       	                    |
+  | m               	| Mute or Unmute                          |
+  | UP               	| Move Up File Selector                   |
+  | DOWN              | Move Down File Selector                 |
+  
 * #### Supported File Formats
+  * ##### FLAC
+  * ##### OGG
+  * ##### MP3
+  * ##### WAV
 ## How to install
 ## How to run
 ## Music Samples Test
