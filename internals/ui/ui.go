@@ -44,7 +44,7 @@ func StartUI() {
 	go t.RenderSongInfo()
 	wg.Add(4)
 	wg.Done()
-	time.Sleep(time.Millisecond * 5)
+	time.Sleep(time.Millisecond * 10)
 	t.SetupGrid()
 	t.uiEvents = tui.PollEvents()
 	t.ticker = &time.NewTicker(time.Microsecond).C
@@ -81,7 +81,7 @@ func (t *TUI) RenderProgressBar() {
 	processBar.Percent = 0
 	processBar.Label = "Music Name"
 	processBar.BarColor = tui.ColorWhite
-	processBar.LabelStyle = tui.NewStyle(tui.ColorCyan)
+	processBar.LabelStyle = tui.NewStyle(tui.ColorWhite)
 	t.progressBar = processBar
 }
 func (t *TUI) RenderSongInfo() {
