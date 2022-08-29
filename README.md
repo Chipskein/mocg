@@ -12,6 +12,7 @@
 * [How to install](#how-to-run)   
 * [How to run](#how-to-run)
 * [Music Samples Test](#how-to-run)
+* [Known Bugs](#how-to-run)
 * [Dependencies](#how-to-run)    
 * [Screenshots](#description)
 * [License](#how-to-run)    
