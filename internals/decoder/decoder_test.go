@@ -1,11 +1,12 @@
 package decoder
 
 import (
-	"chipskein/mocg/internals/player"
-	"chipskein/mocg/internals/repositories"
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/chipskein/mocg/internals/player"
+	"github.com/chipskein/mocg/internals/repositories"
 )
 
 var wg sync.WaitGroup

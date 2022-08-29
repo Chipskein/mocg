@@ -1,14 +1,15 @@
 package ui
 
 import (
-	"chipskein/mocg/internals/decoder"
-	"chipskein/mocg/internals/player"
-	"chipskein/mocg/internals/repositories"
 	"fmt"
 	"log"
 	"path"
 	"sync"
 	"time"
+
+	"github.com/chipskein/mocg/internals/decoder"
+	"github.com/chipskein/mocg/internals/player"
+	"github.com/chipskein/mocg/internals/repositories"
 
 	tui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"

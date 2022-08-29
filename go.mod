@@ -1,4 +1,4 @@
-module chipskein/mocg
+module github.com/chipskein/mocg
 
 go 1.17
 

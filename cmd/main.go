@@ -1,7 +1,7 @@
 package main
 
 import (
-	"chipskein/mocg/internals/ui"
+	"github.com/chipskein/mocg/internals/ui"
 )
 
 func main() {

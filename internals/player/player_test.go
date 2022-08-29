@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	r "chipskein/mocg/internals/repositories"
+	r "github.com/chipskein/mocg/internals/repositories"
 
 	"github.com/faiface/beep/vorbis"
 )
