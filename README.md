@@ -1,8 +1,8 @@
 <div align="center">
+  <h1>MOCG ( Music on console with Go )</h1>
   <img src="https://images.squarespace-cdn.com/content/v1/5e10bdc20efb8f0d169f85f9/1590751925678-5XVSVXMC2BX38RNKKO19/music.png" style="width:160px;">
 </div>
 
-# MOCG ( Music on console with Go )
 ## Index
 * [Demo](#demo)
 * [Description](#description)
