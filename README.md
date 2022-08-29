@@ -19,10 +19,7 @@
 * [License](#license)
 
 ## Demo
-* #### Alacritty
-  ![teste](https://miro.medium.com/max/1400/1*zGZSsGmCMrAF3PEkrvUgKg.gif)
-* #### TTY
-  ![teste](https://miro.medium.com/max/1400/1*zGZSsGmCMrAF3PEkrvUgKg.gif)
+    ![demo-gif](https://raw.githubusercontent.com/Chipskein/mocg/main/screenshots/demo.gif)
 ## Description
 ## Explanation
 * #### What is MOC
