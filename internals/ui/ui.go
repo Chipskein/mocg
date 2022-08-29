@@ -60,7 +60,7 @@ func (t *TUI) RenderFileList() {
 	filelist.TitleStyle.Fg = tui.ColorWhite
 	filelist.SelectedRowStyle.Fg = tui.ColorBlack
 	filelist.SelectedRowStyle.Bg = tui.ColorWhite
-	filelist.TextStyle.Fg = tui.ColorMagenta
+	filelist.TextStyle.Fg = tui.ColorWhite
 	t.filelist = filelist
 }
 func (t *TUI) RenderVolumeMixer() {
