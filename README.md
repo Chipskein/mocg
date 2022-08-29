@@ -54,7 +54,7 @@
 * [termui](https://github.com/gizak/termui)
 ## Screenshots
 ## License
-* [MIT](https://raw.githubusercontent.com/Chipskein/mocg/main/LICENSE?token=GHSAT0AAAAAABXMZE7QAZAU3JB54VRCP754YYMFC7A)
+* [MIT](https://raw.githubusercontent.com/Chipskein/mocg/main/LICENSE)
 
 
 
