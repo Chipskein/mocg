@@ -9,7 +9,6 @@
 * [Explanation](#explanation)
     * [What's MOC](#what-is-moc)
     * [Keyboard Shortcuts](#keyboard-shortcuts)
-    * [Config File](#config-file)
     * [Supported File Formats](#supported-file-formats)
 * [How to install](#how-to-install)   
 * [How to run](#how-to-run)
@@ -27,6 +26,7 @@
 ## Description
 ## Explanation
 * #### What is MOC
+  [Music On Console (MOC)](https://github.com/jonsafari/mocp) is an ncurses-based console audio player for Linux/UNIX.It is designed to be powerful and easy to use, with an interface inspired by the Midnight Commander console file manager. The default interface layout comprises a file list in the left pane with the playlist on the right. [See more](https://en.wikipedia.org/wiki/Music_on_Console)
 * #### Keyboard Shortcuts
   | **Key** 	        | **Description**                         |
   |-----------------	|-----------------------------------------|
