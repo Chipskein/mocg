@@ -4,6 +4,8 @@
 
 ## Index
 * [Demo](#description)
+   * [Alacritty](#what-is-a-bytecode-virtual-machine)
+    * [TTY](#cpu-cycle)
 * [Description](#description)
 * [Explanation](#explanation)
     * [What's MOC](#what-is-a-bytecode-virtual-machine)
