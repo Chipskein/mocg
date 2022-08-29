@@ -3,21 +3,41 @@
 
 
 ## Index
-* [Demo](#description)
-   * [Alacritty](#what-is-a-bytecode-virtual-machine)
-    * [TTY](#cpu-cycle)
+* [Demo](#demo)
+   * [Alacritty](#alacritty)
+    * [TTY](#tty)
 * [Description](#description)
 * [Explanation](#explanation)
-    * [What's MOC](#what-is-a-bytecode-virtual-machine)
-    * [Keyboard Shortcuts](#cpu-cycle)
-    * [Config File](#cpu-cycle)
-* [How to install](#how-to-run)   
+    * [What's MOC](#what-is-moc)
+    * [Keyboard Shortcuts](#keyboard-shortcuts)
+    * [Config File](#config-file)
+* [How to install](#how-to-install)   
 * [How to run](#how-to-run)
-* [Music Samples Test](#how-to-run)
-* [Known Bugs](#how-to-run)
-* [Dependencies](#how-to-run)    
-* [Screenshots](#description)
-* [License](#how-to-run)    
+* [Music Samples Test](#music-samples-test)
+* [Known Bugs](#known-bugs)
+* [Dependencies](#dependencies)    
+* [Screenshots](#screenshots)
+* [License](#license)
+
+## Demo
+* #### tty
+* #### alacritty
+## Description
+## Explanation
+* #### What is MOC
+* #### Keyboard Shortcuts
+* #### Config File
+
+## How to install
+## How to run
+## Music Samples Test
+## Known Bugs
+## Dependencies
+## Screenshots
+## License
+
+
+
 
   
 
