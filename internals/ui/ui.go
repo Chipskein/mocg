@@ -76,17 +76,17 @@ func (t *TUI) RenderVolumeMixer() {
 func (t *TUI) RenderProgressBar() {
 
 	processBar := widgets.NewGauge()
-	processBar.Title = "Status"
+	processBar.Title = ""
 	processBar.TitleStyle.Fg = tui.ColorWhite
-	processBar.Percent = 50
-	processBar.Label = "Music Name"
+	processBar.Percent = 0
+	processBar.Label = ""
 	processBar.BarColor = tui.ColorWhite
 	processBar.LabelStyle = tui.NewStyle(tui.ColorWhite)
 	t.progressBar = processBar
 }
 func (t *TUI) RenderSongInfo() {
 	p := widgets.NewParagraph()
-	p.Text = fmt.Sprintf("Filename:%s Time:%s  Duration:%s", "", "00:00", "00:00")
+	p.Text = fmt.Sprintf("Time:%s  Duration:%s", "0s", "0s")
 	t.p = p
 }
 func (t *TUI) SetupGrid() {
@@ -140,6 +140,18 @@ func (t *TUI) HandleTUIEvents() {
 				wg.Add(1)
 				wg.Done()
 				t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
+				t.RenderUI()
+			case "m":
+				go t.player.Mute()
+				wg.Add(1)
+				wg.Done()
+				if !t.player.Volume.Silent {
+					t.volumeBar.Percent = 0
+					t.volumeBar.Label = "MUTED"
+				} else {
+					t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
+					t.volumeBar.Label = "Volume"
+				}
 				t.RenderUI()
 			case "<Resize>":
 				payload := e.Payload.(tui.Resize)

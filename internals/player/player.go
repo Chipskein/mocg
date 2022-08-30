@@ -74,7 +74,11 @@ func (p *PlayerController) VolumeUp() {
 func (p *PlayerController) Stop() {
 	*p.Done <- true
 }
-
+func (p *PlayerController) Mute() {
+	speaker.Lock()
+	p.Volume.Silent = !p.Volume.Silent
+	speaker.Unlock()
+}
 func InitPlayer(sampleRate beep.SampleRate, streamer beep.StreamSeekCloser, f *os.File) *PlayerController {
 	ctrl := &beep.Ctrl{Streamer: beep.Loop(1, streamer)}
 	resampler := beep.ResampleRatio(4, 1, ctrl)
