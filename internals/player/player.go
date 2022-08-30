@@ -1,7 +1,6 @@
 package player
 
 import (
-	"fmt"
 	"os"
 	"sync"
 	"time"
@@ -42,8 +41,6 @@ func (p *PlayerController) Play() {
 			case <-*p.Done:
 				speaker.Clear()
 				break loop
-			case <-time.After(time.Second):
-				fmt.Println(p.File.Name(), p.Samplerate.D(p.Streamer.Position()).Round(time.Second))
 			}
 
 		}

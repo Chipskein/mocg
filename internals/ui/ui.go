@@ -18,15 +18,16 @@ import (
 var wg sync.WaitGroup
 
 type TUI struct {
-	grid        *tui.Grid
-	ticker      *<-chan time.Time
-	uiEvents    <-chan tui.Event
-	progressBar *widgets.Gauge
-	filelist    *widgets.List
-	p           *widgets.Paragraph
-	spark       *widgets.SparklineGroup
-	repo        *repositories.LocalRepository
-	player      *player.PlayerController
+	grid             *tui.Grid
+	ticker           *<-chan time.Time
+	tickerProgresBar *<-chan time.Time
+	uiEvents         <-chan tui.Event
+	progressBar      *widgets.Gauge
+	volumeBar        *widgets.Gauge
+	filelist         *widgets.List
+	p                *widgets.Paragraph
+	repo             *repositories.LocalRepository
+	player           *player.PlayerController
 }
 
 func StartUI() {
@@ -48,7 +49,7 @@ func StartUI() {
 	t.SetupGrid()
 	t.uiEvents = tui.PollEvents()
 	t.ticker = &time.NewTicker(time.Microsecond).C
-
+	t.tickerProgresBar = &time.NewTicker(time.Second).C
 	t.HandleTUIEvents()
 
 }
@@ -64,21 +65,20 @@ func (t *TUI) RenderFileList() {
 	t.filelist = filelist
 }
 func (t *TUI) RenderVolumeMixer() {
-	data := []float64{5, 5, 5, 5, 5, 5}
-	sl0 := widgets.NewSparkline()
-	sl0.Data = data
-	sl0.LineColor = tui.ColorMagenta
-	sl0.MaxVal = 100
-	sl0.Title = "Volume"
-	slg0 := widgets.NewSparklineGroup(sl0)
-	t.spark = slg0
+	volumeBar := widgets.NewGauge()
+	volumeBar.TitleStyle.Fg = tui.ColorWhite
+	volumeBar.Percent = 50
+	volumeBar.Label = "Volume"
+	volumeBar.BarColor = tui.ColorWhite
+	volumeBar.LabelStyle = tui.NewStyle(tui.ColorWhite)
+	t.volumeBar = volumeBar
 }
 func (t *TUI) RenderProgressBar() {
 
 	processBar := widgets.NewGauge()
 	processBar.Title = "Status"
 	processBar.TitleStyle.Fg = tui.ColorWhite
-	processBar.Percent = 0
+	processBar.Percent = 50
 	processBar.Label = "Music Name"
 	processBar.BarColor = tui.ColorWhite
 	processBar.LabelStyle = tui.NewStyle(tui.ColorWhite)
@@ -86,7 +86,7 @@ func (t *TUI) RenderProgressBar() {
 }
 func (t *TUI) RenderSongInfo() {
 	p := widgets.NewParagraph()
-	p.Text = fmt.Sprintf("Filename:%s\n Status:%s\n Time:%s\n Duration:%s\n Loop:%s\n Press H for help\n", "filename.ext", "Playing", "102s", "1m30s", "false")
+	p.Text = fmt.Sprintf("Filename:%s Time:%s  Duration:%s", "", "00:00", "00:00")
 	t.p = p
 }
 func (t *TUI) SetupGrid() {
@@ -95,17 +95,15 @@ func (t *TUI) SetupGrid() {
 	grid.SetRect(0, 0, termWidth, termHeight)
 
 	grid.Set(
-		tui.NewRow(1.8/2,
-			tui.NewCol(1.5/2,
+		tui.NewRow(1.6/2,
+			tui.NewCol(2/2,
 				t.filelist),
-			tui.NewCol(0.5/2,
-				tui.NewRow(0.5/2, t.spark),
-				tui.NewRow(0.5/2, t.p),
-				tui.NewRow(1.0/2, t.p),
-			),
 		),
 		tui.NewRow(0.2/2,
-			t.progressBar),
+			tui.NewCol(1.5/2, t.p),
+			tui.NewCol(0.5/2, t.volumeBar),
+		),
+		tui.NewRow(0.18/2, t.progressBar),
 	)
 	t.grid = grid
 	t.RenderUI()
@@ -133,8 +131,16 @@ func (t *TUI) HandleTUIEvents() {
 				t.RenderUI()
 			case ",":
 				go t.player.VolumeDown()
+				wg.Add(1)
+				wg.Done()
+				t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
+				t.RenderUI()
 			case ".":
 				go t.player.VolumeUp()
+				wg.Add(1)
+				wg.Done()
+				t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
+				t.RenderUI()
 			case "<Resize>":
 				payload := e.Payload.(tui.Resize)
 				t.grid.SetRect(0, 0, payload.Width, payload.Height)
@@ -144,6 +150,19 @@ func (t *TUI) HandleTUIEvents() {
 
 		case <-*t.ticker:
 			t.RenderUI()
+		case <-*t.tickerProgresBar:
+			if t.progressBar.Percent == 100 {
+				t.progressBar.Percent--
+			}
+			if t.player != nil && !t.player.Ctrl.Paused && t.progressBar.Percent < 100 {
+				t.progressBar.Percent++
+			}
+			t.RenderUI()
+		}
+		if t.player != nil && !t.player.Ctrl.Paused {
+			t.p.Text = fmt.Sprintf("Time:%s  Duration:%s", t.player.Samplerate.D(t.player.Streamer.Position()).Round(time.Second), t.player.Samplerate.D(t.player.Streamer.Len()).Round(time.Second))
+			t.RenderUI()
+
 		}
 	}
 }
@@ -170,9 +189,13 @@ func (t *TUI) HandleSelectedFile(filename string) {
 
 	t.player = player.InitPlayer(format.SampleRate, streamer, f)
 	go t.player.Play()
+
+	t.progressBar.Percent = 0
 	t.progressBar.Title = "Playing >"
 	t.progressBar.Label = filename
+	t.p.Text = fmt.Sprintf("Time:%s  Duration:%s", t.player.Samplerate.D(t.player.Streamer.Position()).Round(time.Second), t.player.Samplerate.D(t.player.Streamer.Len()).Round(time.Second))
 
+	t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
 }
 func (t *TUI) RenderUI() {
 	tui.Render(t.grid)
