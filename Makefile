@@ -11,7 +11,8 @@ test-ui:
 test-decoder:
 	go test ./internals/decoder/decoder.go ./internals/decoder/decoder_test.go -v
 	
-
-
-
+install-linux:
+	make build;
+	cp ./bin/mocg /usr/bin;
+	
 	
