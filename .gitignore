@@ -1,3 +1,4 @@
 .env
 bin/
 log.txt
+download_tests.sh
