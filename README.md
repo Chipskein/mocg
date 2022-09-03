@@ -39,8 +39,12 @@
   | ,               	| Volume Down                             |
   | q               	| Exit MOCG UI       	                    |
   | m               	| Mute or Unmute                          |
-  | UP               	| Move Up File Selector                   |
-  | DOWN              | Move Down File Selector                 |
+  | UP,K              | Move Up File Selector                   |
+  | DOWN,J            | Move Down File Selector                 |
+  | Home              | Move To Top List                        |
+  | End               | Move To Bottom List                     |
+  | PageUp            | Move Up Half Page                       |
+  | PageDown          | Move Down Half Page                     |
   
 * #### Supported File Formats
   * ##### FLAC
