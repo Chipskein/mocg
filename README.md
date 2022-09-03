@@ -55,6 +55,14 @@
 ## How to install
 ## How to run
 ## Music Samples Test
+|                     **Music Name**                                  |   **Artist Name**    |
+| [City of Drones](https://www.youtube.com/watch?v=qYTHZCBpycg)       |    WhiteBat      | 
+| [Inamorata](https://www.youtube.com/watch?v=WzWSIvxEBrA)            |     Maruex       |  
+| [Ninguém me ama](https://www.youtube.com/watch?v=iYENyuka2NQ)       |  Quarteto em Cy  |  
+| [The Perfect Girl](https://www.youtube.com/watch?v=W5Sq71VTJ9Q)     |      Maruex      |  
+| [りんごの唄](https://www.youtube.com/watch?v=OFXIXF_RYyw)             |     並木路子      |  
+| [就寝御礼](https://www.youtube.com/watch?v=mEQZNRT6Pqk)               |     PSYQUI      |    
+
 ## Known Bugs
 * #### Music Files with Sample's Rate != 480000 will play with strange behavior like speed up or high pitch
   This happens because of beep's package speaker.Init() function,reinit will PANIC on linux systems [Similar issue](https://github.com/faiface/beep/issues/146).A temporary solution is to use a Default Sample Rate and Init Speaker only one time
