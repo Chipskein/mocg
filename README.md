@@ -56,6 +56,7 @@
 ## How to run
 ## Music Samples Test
 |                     **Music Name**                                  |   **Artist Name**    |
+|---------------------------------------------------------------------|----------------------|
 | [City of Drones](https://www.youtube.com/watch?v=qYTHZCBpycg)       |    WhiteBat      | 
 | [Inamorata](https://www.youtube.com/watch?v=WzWSIvxEBrA)            |     Maruex       |  
 | [Ninguém me ama](https://www.youtube.com/watch?v=iYENyuka2NQ)       |  Quarteto em Cy  |  
