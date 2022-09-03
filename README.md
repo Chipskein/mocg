@@ -65,7 +65,7 @@
 | [就寝御礼](https://www.youtube.com/watch?v=mEQZNRT6Pqk)               |     PSYQUI      |    
 
 ## Known Bugs
-* #### Music Files with Sample's Rate != 480000 will play with strange behavior like speed up or high pitch
+* #### Music Files with Sample's Rate != 44000 will play with strange behavior like speed up or high pitch
   This happens because of beep's package speaker.Init() function,reinit will PANIC on linux systems [Similar issue](https://github.com/faiface/beep/issues/146).A temporary solution is to use a Default Sample Rate and Init Speaker only one time
   
 ## Dependencies

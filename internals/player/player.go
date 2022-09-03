@@ -15,7 +15,7 @@ const MAX_VOLUME = 0.3  //100%
 const MIN_VOLUME = -0.7 //1%
 
 /*SEGFAULT when reinit speaker */
-var DEFAULT_SAMPLE beep.SampleRate = 48000
+var DEFAULT_SAMPLE beep.SampleRate = 44000
 var err_speaker = speaker.Init(DEFAULT_SAMPLE, DEFAULT_SAMPLE.N(time.Second/10))
 
 var wg sync.WaitGroup
