@@ -12,7 +12,8 @@ import (
 var wg sync.WaitGroup
 
 func TestDecodeOgg(t *testing.T) {
-	var filetest = "../testAudios/ogg/music3.ogg"
+	t.Logf("Play ogg file for 10 seconds")
+	var filetest = "../testAudios/ogg/Inamorata-Maruex.ogg"
 	f := repositories.ReadFile(filetest)
 	streamer, format, err := DecodeOgg(f)
 	if err != nil {
@@ -32,7 +33,8 @@ func TestDecodeOgg(t *testing.T) {
 	wg.Wait()
 }
 func TestDecodeMp3(t *testing.T) {
-	var filetest = "../testAudios/mp3/music3.mp3"
+	t.Logf("Play mp3 file for 10 seconds")
+	var filetest = "../testAudios/mp3/Inamorata-Maruex.mp3"
 	f := repositories.ReadFile(filetest)
 	streamer, format, err := DecodeMp3(f)
 	if err != nil {
@@ -52,7 +54,8 @@ func TestDecodeMp3(t *testing.T) {
 	wg.Wait()
 }
 func TestDecodeWav(t *testing.T) {
-	var filetest = "../testAudios/wav/music3.wav"
+	t.Logf("Play wav file for 10 seconds")
+	var filetest = "../testAudios/wav/Inamorata-Maruex.wav"
 	f := repositories.ReadFile(filetest)
 	streamer, format, err := DecodeWav(f)
 	if err != nil {
@@ -72,7 +75,8 @@ func TestDecodeWav(t *testing.T) {
 	wg.Wait()
 }
 func TestDecodeFlac(t *testing.T) {
-	var filetest = "../testAudios/flac/music3.flac"
+	t.Logf("Play flac file for 10 seconds")
+	var filetest = "../testAudios/flac/Inamorata-Maruex.flac"
 	f := repositories.ReadFile(filetest)
 	streamer, format, err := DecodeFlac(f)
 	if err != nil {
