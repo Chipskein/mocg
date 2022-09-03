@@ -30,30 +30,6 @@ type TUI struct {
 	player           *player.PlayerController
 }
 
-func StartUI() {
-	if err := tui.Init(); err != nil {
-		log.Fatalf("failed to initialize termui: %v", err)
-	}
-	defer tui.Close()
-
-	var t = &TUI{}
-	t.repo = &repositories.LocalRepository{CURRENT_DIRECTORY: "../testAudios", DEFAULT_DIRECTORY: "/home/chipskein/Music"}
-
-	go t.RenderFileList()
-	go t.RenderVolumeMixer()
-	go t.RenderProgressBar()
-	go t.RenderSongInfo()
-	wg.Add(4)
-	wg.Done()
-	time.Sleep(time.Millisecond * 10)
-	t.SetupGrid()
-	t.uiEvents = tui.PollEvents()
-	t.ticker = &time.NewTicker(time.Microsecond).C
-	t.tickerProgresBar = &time.NewTicker(time.Second).C
-	t.HandleTUIEvents()
-
-}
-
 func (t *TUI) RenderFileList() {
 	filelist := widgets.NewList()
 	filelist.Rows = t.repo.ListFiles()
@@ -117,10 +93,18 @@ func (t *TUI) HandleTUIEvents() {
 				return
 			case "<Enter>":
 				t.HandleSelectedFile(t.filelist.Rows[t.filelist.SelectedRow])
-			case "<Down>":
+			case "<Down>", "j":
 				t.filelist.ScrollDown()
-			case "<Up>":
+			case "<Up>", "k":
 				t.filelist.ScrollUp()
+			case "<End>":
+				t.filelist.ScrollBottom()
+			case "<Home>":
+				t.filelist.ScrollTop()
+			case "<PageDown>":
+				t.filelist.ScrollHalfPageDown()
+			case "<PageUp>":
+				t.filelist.ScrollHalfPageUp()
 			case "<Space>":
 				go t.player.PauseOrResume()
 				if !t.player.Ctrl.Paused {
@@ -212,4 +196,28 @@ func (t *TUI) HandleSelectedFile(filename string) {
 }
 func (t *TUI) RenderUI() {
 	tui.Render(t.grid)
+}
+
+func StartUI() {
+	if err := tui.Init(); err != nil {
+		log.Fatalf("failed to initialize termui: %v", err)
+	}
+	defer tui.Close()
+
+	var t = &TUI{}
+	t.repo = &repositories.LocalRepository{CURRENT_DIRECTORY: "../testAudios", DEFAULT_DIRECTORY: "/home/chipskein/Music"}
+
+	go t.RenderFileList()
+	go t.RenderVolumeMixer()
+	go t.RenderProgressBar()
+	go t.RenderSongInfo()
+	wg.Add(4)
+	wg.Done()
+	time.Sleep(time.Millisecond * 100)
+	t.SetupGrid()
+	t.uiEvents = tui.PollEvents()
+	t.ticker = &time.NewTicker(time.Microsecond).C
+	t.tickerProgresBar = &time.NewTicker(time.Second).C
+	t.HandleTUIEvents()
+
 }
