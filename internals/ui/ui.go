@@ -44,7 +44,7 @@ func (t *TUI) RenderVolumeMixer() {
 	volumeBar := widgets.NewGauge()
 	volumeBar.TitleStyle.Fg = tui.ColorWhite
 	volumeBar.Percent = 50
-	volumeBar.Label = "Volume"
+	volumeBar.Label = fmt.Sprintf("Volume %d%%", volumeBar.Percent)
 	volumeBar.BarColor = tui.ColorWhite
 	volumeBar.LabelStyle = tui.NewStyle(tui.ColorWhite)
 	t.volumeBar = volumeBar
@@ -117,24 +117,22 @@ func (t *TUI) HandleTUIEvents() {
 				go t.player.VolumeDown()
 				wg.Add(1)
 				wg.Done()
-				t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
+				//t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
 				t.RenderUI()
 			case ".":
 				go t.player.VolumeUp()
 				wg.Add(1)
 				wg.Done()
-				t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
+				//t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
 				t.RenderUI()
 			case "m":
 				go t.player.Mute()
 				wg.Add(1)
 				wg.Done()
 				if !t.player.Volume.Silent {
-					t.volumeBar.Percent = 0
 					t.volumeBar.Label = "MUTED"
 				} else {
-					t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
-					t.volumeBar.Label = "Volume"
+					t.volumeBar.Label = fmt.Sprintf("Volume %d%%", t.volumeBar.Percent)
 				}
 				t.RenderUI()
 			case "<Resize>":
@@ -189,7 +187,6 @@ func (t *TUI) HandleSelectedFile(filename string) {
 	t.progressBar.Title = "Playing >"
 	t.progressBar.Label = filename
 	t.p.Text = fmt.Sprintf("Time:%s  Duration:%s", t.player.Samplerate.D(t.player.Streamer.Position()).Round(time.Second), t.player.Samplerate.D(t.player.Streamer.Len()).Round(time.Second))
-	t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
 }
 func (t *TUI) RenderUI() {
 	tui.Render(t.grid)
