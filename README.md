@@ -21,7 +21,7 @@
 ## Demo
   
   <div align="center">
-    <img src="https://raw.githubusercontent.com/Chipskein/mocg/main/screenshots/demo.gif">
+    <img src="https://raw.githubusercontent.com/Chipskein/mocg/main/docs/demo.gif">
   </div>
   
   
