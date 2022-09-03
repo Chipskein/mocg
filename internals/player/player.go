@@ -21,8 +21,9 @@ type PlayerController struct {
 }
 
 const VOLUME = 0.1
-const MAX_VOLUME = 1.0
-const MIN_VOLUME = -11.0 //MUTE
+const MAX_VOLUME = 0.3 //100%
+
+const MIN_VOLUME = -0.7 //1%
 
 /*SEGFAULT when reinit speaker */
 var DEFAULT_SAMPLE beep.SampleRate = 48000
@@ -82,7 +83,7 @@ func (p *PlayerController) Mute() {
 func InitPlayer(sampleRate beep.SampleRate, streamer beep.StreamSeekCloser, f *os.File) *PlayerController {
 	ctrl := &beep.Ctrl{Streamer: beep.Loop(1, streamer)}
 	resampler := beep.ResampleRatio(4, 1, ctrl)
-	volume := &effects.Volume{Streamer: resampler, Base: 2}
+	volume := &effects.Volume{Streamer: resampler, Base: 10}
 	done := make(chan bool, 1)
 	return &PlayerController{Samplerate: sampleRate, Streamer: streamer, Ctrl: ctrl, Resampler: resampler, Volume: volume, Done: &done, File: f}
 }

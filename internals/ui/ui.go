@@ -170,11 +170,13 @@ func (t *TUI) HandleTUIEvents() {
 				t.progressBar.Percent++
 			}
 			t.RenderUI()
+			if t.player != nil {
+				log.Print("Volume ", t.player.Volume.Volume)
+			}
 		}
 		if t.player != nil && !t.player.Ctrl.Paused {
 			t.p.Text = fmt.Sprintf("Time:%s  Duration:%s", t.player.Samplerate.D(t.player.Streamer.Position()).Round(time.Second), t.player.Samplerate.D(t.player.Streamer.Len()).Round(time.Second))
 			t.RenderUI()
-
 		}
 	}
 }
@@ -206,7 +208,6 @@ func (t *TUI) HandleSelectedFile(filename string) {
 	t.progressBar.Title = "Playing >"
 	t.progressBar.Label = filename
 	t.p.Text = fmt.Sprintf("Time:%s  Duration:%s", t.player.Samplerate.D(t.player.Streamer.Position()).Round(time.Second), t.player.Samplerate.D(t.player.Streamer.Len()).Round(time.Second))
-
 	t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
 }
 func (t *TUI) RenderUI() {
