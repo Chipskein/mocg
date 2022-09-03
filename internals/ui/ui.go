@@ -146,16 +146,15 @@ func (t *TUI) HandleTUIEvents() {
 		case <-*t.ticker:
 			t.RenderUI()
 		case <-*t.tickerProgresBar:
-			if t.progressBar.Percent == 100 {
-				t.progressBar.Percent--
-			}
 			if t.player != nil && !t.player.Ctrl.Paused && t.progressBar.Percent < 100 {
 				t.progressBar.Percent++
 			}
 			t.RenderUI()
 		}
 		if t.player != nil && !t.player.Ctrl.Paused {
-			t.p.Text = fmt.Sprintf("Time:%s  Duration:%s", t.player.Samplerate.D(t.player.Streamer.Position()).Round(time.Second), t.player.Samplerate.D(t.player.Streamer.Len()).Round(time.Second))
+			var now = t.player.Samplerate.D(t.player.Streamer.Position()).Round(time.Second)
+			var duration = t.player.Samplerate.D(t.player.Streamer.Len()).Round(time.Second)
+			t.p.Text = fmt.Sprintf("Time:%s  Duration:%s", now, duration)
 			t.RenderUI()
 		}
 	}
@@ -187,7 +186,13 @@ func (t *TUI) HandleSelectedFile(filename string) {
 	t.progressBar.Percent = 0
 	t.progressBar.Title = "|> Playing"
 	t.progressBar.Label = filename
-	t.p.Text = fmt.Sprintf("Time:%s  Duration:%s", t.player.Samplerate.D(t.player.Streamer.Position()).Round(time.Second), t.player.Samplerate.D(t.player.Streamer.Len()).Round(time.Second))
+	var now = t.player.Samplerate.D(t.player.Streamer.Position()).Round(time.Second)
+	var duration = t.player.Samplerate.D(t.player.Streamer.Len()).Round(time.Second)
+	t.p.Text = fmt.Sprintf("Time:%s  Duration:%s", now, duration)
+
+	//para cada 1%
+	t.tickerProgresBar = &time.NewTicker(duration / 100).C
+
 }
 func (t *TUI) RenderUI() {
 	tui.Render(t.grid)
