@@ -43,7 +43,7 @@ func (t *TUI) RenderFileList() {
 func (t *TUI) RenderVolumeMixer() {
 	volumeBar := widgets.NewGauge()
 	volumeBar.TitleStyle.Fg = tui.ColorWhite
-	volumeBar.Percent = 50
+	volumeBar.Percent = 100
 	volumeBar.Label = fmt.Sprintf("Volume %d%%", volumeBar.Percent)
 	volumeBar.BarColor = tui.ColorWhite
 	volumeBar.LabelStyle = tui.NewStyle(tui.ColorWhite)
@@ -117,14 +117,26 @@ func (t *TUI) HandleTUIEvents() {
 				}
 				t.RenderUI()
 			case ",":
-				go t.player.VolumeDown()
-				wg.Add(1)
-				wg.Done()
+				if t.volumeBar.Percent > 0 {
+					t.volumeBar.Percent--
+					go t.player.VolumeDown()
+					wg.Add(1)
+					wg.Done()
+				} else {
+					t.volumeBar.Percent = 0
+				}
+				t.volumeBar.Label = fmt.Sprintf("Volume %d%%", t.volumeBar.Percent)
 				t.RenderUI()
 			case ".":
-				go t.player.VolumeUp()
-				wg.Add(1)
-				wg.Done()
+				if t.volumeBar.Percent < 100 {
+					t.volumeBar.Percent++
+					go t.player.VolumeUp()
+					wg.Add(1)
+					wg.Done()
+				} else {
+					t.volumeBar.Percent = 100
+				}
+				t.volumeBar.Label = fmt.Sprintf("Volume %d%%", t.volumeBar.Percent)
 				t.RenderUI()
 			case "m":
 				go t.player.Mute()
@@ -160,6 +172,7 @@ func (t *TUI) HandleTUIEvents() {
 	}
 }
 func (t *TUI) HandleSelectedFile(filename string) {
+	var persistInfo = false
 	if filename == "../" {
 		parentPath := path.Dir(t.repo.CURRENT_DIRECTORY)
 		t.repo.CURRENT_DIRECTORY = parentPath
@@ -175,6 +188,9 @@ func (t *TUI) HandleSelectedFile(filename string) {
 		return
 	}
 	if t.player != nil {
+		player.OLD_PERCENT = t.volumeBar.Percent
+		player.OLD_VOLUME = t.player.Volume.Volume
+		persistInfo = true
 		t.player.Stop()
 	}
 	var f = repositories.ReadFile(file.FullPath)
@@ -182,7 +198,6 @@ func (t *TUI) HandleSelectedFile(filename string) {
 
 	t.player = player.InitPlayer(format.SampleRate, streamer, f)
 	go t.player.Play()
-
 	t.progressBar.Percent = 0
 	t.progressBar.Title = "|> Playing"
 	t.progressBar.Label = filename
@@ -190,7 +205,10 @@ func (t *TUI) HandleSelectedFile(filename string) {
 	var duration = t.player.Samplerate.D(t.player.Streamer.Len()).Round(time.Second)
 	t.p.Text = fmt.Sprintf("Time:%s  Duration:%s", now, duration)
 
-	//para cada 1%
+	if persistInfo {
+		t.player.Volume.Volume = player.OLD_VOLUME
+		t.volumeBar.Percent = player.OLD_PERCENT
+	}
 	t.tickerProgresBar = &time.NewTicker(duration / 100).C
 
 }

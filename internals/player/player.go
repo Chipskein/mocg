@@ -10,9 +10,10 @@ import (
 	"github.com/faiface/beep/speaker"
 )
 
-const VOLUME = 0.1
-const MAX_VOLUME = 0.3  //100%
-const MIN_VOLUME = -0.7 //1%
+var OLD_VOLUME float64 = 0
+var OLD_PERCENT int = 100
+
+const VOLUME float64 = 0.025
 
 /*SEGFAULT when reinit speaker */
 var DEFAULT_SAMPLE beep.SampleRate = 44000
@@ -56,17 +57,11 @@ func (p *PlayerController) PauseOrResume() {
 	speaker.Unlock()
 }
 func (p *PlayerController) VolumeDown() {
-	if p.Volume.Volume <= MIN_VOLUME {
-		return
-	}
 	speaker.Lock()
 	p.Volume.Volume -= VOLUME
 	speaker.Unlock()
 }
 func (p *PlayerController) VolumeUp() {
-	if p.Volume.Volume >= MAX_VOLUME {
-		return
-	}
 	speaker.Lock()
 	p.Volume.Volume += VOLUME
 	speaker.Unlock()
