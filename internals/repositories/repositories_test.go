@@ -14,15 +14,15 @@ type TestFiles struct {
 
 func TestReadDirectory(t *testing.T) {
 	var tests = []TestDirectories{
-		{LocalRepository{"/home/chipskein/Music/", "/home/chipskein/sources/mocg/audios/", nil}, false},
-		{LocalRepository{"/home/chipskein/Music/", "/home/chipskein/fasojfklasjfklasjhfjkahsf", nil}, false},
-		{LocalRepository{"/home/chipskein/Music/", "/", nil}, false},
-		{LocalRepository{"/home/chipskein/Music/", "/home/chipskein/", nil}, false},
-		{LocalRepository{"/home/chipskein/Music/", "../../audios", nil}, false},
-		{LocalRepository{"/home/chipskein/Music/", "", nil}, false},
-		{LocalRepository{"/wrong/default/path", "fhjasjfhajkshfjkashfkjahfjkasf", nil}, true},
-		{LocalRepository{"/another/wrong/default/path", "fjkasjfkasjfkjas", nil}, true},
-		{LocalRepository{"../../audios/", "/invalid/directory/convert", nil}, false},
+		{LocalRepository{"/home/chipskein/Music/", "/home/chipskein/sources/mocg/audios/", nil, true}, false},
+		{LocalRepository{"/home/chipskein/Music/", "/home/chipskein/fasojfklasjfklasjhfjkahsf", nil, true}, false},
+		{LocalRepository{"/home/chipskein/Music/", "/", nil, true}, false},
+		{LocalRepository{"/home/chipskein/Music/", "/home/chipskein/", nil, true}, false},
+		{LocalRepository{"/home/chipskein/Music/", "../../audios", nil, true}, false},
+		{LocalRepository{"/home/chipskein/Music/", "", nil, true}, false},
+		{LocalRepository{"/wrong/default/path", "fhjasjfhajkshfjkashfkjahfjkasf", nil, true}, true},
+		{LocalRepository{"/another/wrong/default/path", "fjkasjfkasjfkjas", nil, true}, true},
+		{LocalRepository{"../../audios/", "/invalid/directory/convert", nil, true}, false},
 	}
 
 	for _, test := range tests {
@@ -39,9 +39,9 @@ func TestReadDirectory(t *testing.T) {
 }
 func TestMapFiles(t *testing.T) {
 	var tests = []TestDirectories{
-		{LocalRepository{"/home/chipskein/Music", "/home/chipskein/sources/mocg/audios/", nil}, false},
-		{LocalRepository{"/home/chipskein/Music", "../", nil}, false},
-		{LocalRepository{"/home/chipskein/Music", "/wrong/path", nil}, false},
+		{LocalRepository{"/home/chipskein/Music", "/home/chipskein/sources/mocg/audios/", nil, true}, false},
+		{LocalRepository{"/home/chipskein/Music", "../", nil, true}, false},
+		{LocalRepository{"/home/chipskein/Music", "/wrong/path", nil, true}, false},
 	}
 	for _, test := range tests {
 		err := test.repository.MapFiles()

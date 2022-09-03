@@ -52,10 +52,9 @@ func (t *TUI) RenderVolumeMixer() {
 func (t *TUI) RenderProgressBar() {
 
 	processBar := widgets.NewGauge()
-	processBar.Title = ""
 	processBar.TitleStyle.Fg = tui.ColorWhite
 	processBar.Percent = 0
-	processBar.Label = ""
+	processBar.Label = " "
 	processBar.BarColor = tui.ColorWhite
 	processBar.LabelStyle = tui.NewStyle(tui.ColorWhite)
 	t.progressBar = processBar
@@ -93,6 +92,10 @@ func (t *TUI) HandleTUIEvents() {
 				return
 			case "<Enter>":
 				t.HandleSelectedFile(t.filelist.Rows[t.filelist.SelectedRow])
+			case "h":
+				t.repo.ShowHiddenFiles = !t.repo.ShowHiddenFiles
+				t.filelist.Rows = t.repo.ListFiles()
+				t.RenderUI()
 			case "<Down>", "j":
 				t.filelist.ScrollDown()
 			case "<Up>", "k":
@@ -108,22 +111,20 @@ func (t *TUI) HandleTUIEvents() {
 			case "<Space>":
 				go t.player.PauseOrResume()
 				if !t.player.Ctrl.Paused {
-					t.progressBar.Title = "Paused ||"
+					t.progressBar.Title = "|| Paused"
 				} else {
-					t.progressBar.Title = "Playing >"
+					t.progressBar.Title = "|> Playing"
 				}
 				t.RenderUI()
 			case ",":
 				go t.player.VolumeDown()
 				wg.Add(1)
 				wg.Done()
-				//t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
 				t.RenderUI()
 			case ".":
 				go t.player.VolumeUp()
 				wg.Add(1)
 				wg.Done()
-				//t.volumeBar.Percent = int(t.player.Volume.Volume * 100)
 				t.RenderUI()
 			case "m":
 				go t.player.Mute()
@@ -184,7 +185,7 @@ func (t *TUI) HandleSelectedFile(filename string) {
 	go t.player.Play()
 
 	t.progressBar.Percent = 0
-	t.progressBar.Title = "Playing >"
+	t.progressBar.Title = "|> Playing"
 	t.progressBar.Label = filename
 	t.p.Text = fmt.Sprintf("Time:%s  Duration:%s", t.player.Samplerate.D(t.player.Streamer.Position()).Round(time.Second), t.player.Samplerate.D(t.player.Streamer.Len()).Round(time.Second))
 }
@@ -199,7 +200,7 @@ func StartUI() {
 	defer tui.Close()
 
 	var t = &TUI{}
-	t.repo = &repositories.LocalRepository{CURRENT_DIRECTORY: "../testAudios", DEFAULT_DIRECTORY: "/home/chipskein/Music"}
+	t.repo = &repositories.LocalRepository{CURRENT_DIRECTORY: "../testAudios", DEFAULT_DIRECTORY: "/home/chipskein/Music", ShowHiddenFiles: false}
 
 	go t.RenderFileList()
 	go t.RenderVolumeMixer()

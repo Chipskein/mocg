@@ -20,6 +20,7 @@ type LocalRepository struct {
 	DEFAULT_DIRECTORY string
 	CURRENT_DIRECTORY string
 	Files             map[string]File
+	ShowHiddenFiles   bool
 }
 
 func (r *LocalRepository) MapFiles() error {
@@ -30,6 +31,11 @@ func (r *LocalRepository) MapFiles() error {
 	filelist := make(map[string]File)
 	for _, file := range files {
 		var listedfile File
+
+		if !r.ShowHiddenFiles && isAHiddenFIle(file.Name()) {
+			continue
+		}
+
 		listedfile.Size = file.Size()
 		listedfile.IsADirectory = file.IsDir()
 		listedfile.Name = file.Name()
@@ -74,6 +80,12 @@ func (r *LocalRepository) ReadDirectoryOrDefault() ([]fs.FileInfo, error) {
 	}
 
 	return files, nil
+}
+func isAHiddenFIle(filename string) bool {
+	if filename[0] != '.' {
+		return false
+	}
+	return true
 }
 func isExtesionSupported(extension string) bool {
 	switch extension {
