@@ -8,36 +8,26 @@ import (
 
 func Init() *cobra.Command {
 	return &cobra.Command{
-		Use:   "hello [name]",
-		Short: "retorna Olá + name passado",
-		Args:  cobra.ExactArgs(1),
+		Use:   "init",
+		Short: "Init MOCG server",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("Olá %s\n", args[0])
+			fmt.Println("Init MOCG server")
 		},
 	}
 }
-func Restore() *cobra.Command {
-	return &cobra.Command{
-		Use:   "hello [name]",
-		Short: "retorna Olá + name passado",
-		Args:  cobra.ExactArgs(1),
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("Olá %s\n", args[0])
-		},
-	}
-}
+
 func Kill() *cobra.Command {
 	return &cobra.Command{
-		Use:   "hello [name]",
-		Short: "retorna Olá + name passado",
-		Args:  cobra.ExactArgs(1),
+		Use:   "kill",
+		Short: "Kill MOCG server",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("Olá %s\n", args[0])
+			fmt.Println("Kill MOCG server")
 		},
 	}
 }
+
 func main() {
 	rootCmd := cobra.Command{}
-	rootCmd.AddCommand(Init(), Restore(), Kill())
+	rootCmd.AddCommand(Init(), Kill())
 	rootCmd.Execute()
 }
