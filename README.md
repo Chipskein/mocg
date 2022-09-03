@@ -37,8 +37,9 @@
   | SPACE            	| Pause or Resume Music Track             |
   | .               	| Volume Up       	                      |
   | ,               	| Volume Down                             |
-  | q               	| Exit MOCG UI       	                    |
-  | m               	| Mute or Unmute                          |
+  | Q               	| Exit MOCG UI       	                    |
+  | H               	| Toggle Switch to Show Hidden FIles      |
+  | M               	| Mute or Unmute                          |
   | UP,K              | Move Up File Selector                   |
   | DOWN,J            | Move Down File Selector                 |
   | Home              | Move To Top List                        |
