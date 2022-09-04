@@ -231,7 +231,7 @@ func StartUI(CURRENT_DIRECTORY string, DEFAULT_DIRECTORY string, ShowHiddenFiles
 	go t.RenderSongInfo()
 	wg.Add(4)
 	wg.Done()
-	time.Sleep(time.Millisecond * 100)
+	time.Sleep(time.Millisecond * 500)
 	t.SetupGrid()
 	t.uiEvents = tui.PollEvents()
 	t.ticker = &time.NewTicker(time.Microsecond).C
