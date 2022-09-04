@@ -71,6 +71,6 @@
 ## Dependencies
 * [beep](https://github.com/faiface/beep)
 * [termui](https://github.com/gizak/termui)
-## Screenshots
+
 ## License
 * [MIT](https://raw.githubusercontent.com/Chipskein/mocg/main/LICENSE?token=GHSAT0AAAAAABXMZE7Q6FPS4YQZUACJXPSGYYNICUA)
