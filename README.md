@@ -15,7 +15,6 @@
 * [Music Samples Test](#music-samples-test)
 * [Known Bugs](#known-bugs)
 * [Dependencies](#dependencies)    
-* [Screenshots](#screenshots)
 * [License](#license)
 
 ## Demo
