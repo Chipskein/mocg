@@ -16,7 +16,7 @@ var OLD_PERCENT int = 100
 const VOLUME float64 = 0.025
 
 /*SEGFAULT when reinit speaker */
-var DEFAULT_SAMPLE beep.SampleRate = 44000
+var DEFAULT_SAMPLE beep.SampleRate = 48000
 var err_speaker = speaker.Init(DEFAULT_SAMPLE, DEFAULT_SAMPLE.N(time.Second/10))
 
 var wg sync.WaitGroup

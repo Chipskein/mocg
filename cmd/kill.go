@@ -16,5 +16,5 @@ var killCmd = &cobra.Command{
 
 func init() {
 
-	rootCmd.AddCommand(killCmd)
+	mocgCmd.AddCommand(killCmd)
 }
