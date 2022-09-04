@@ -52,7 +52,9 @@
   * ##### WAV
 ## How to install
 **Using Make on linux**
+
 Default Directory will be $HOME/Music
+
 **Required**
   * go>=1.17
   * make
