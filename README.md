@@ -23,8 +23,6 @@
     <img src="https://github.com/Chipskein/mocg/blob/main/docs/demo.gif" style="width:650px"/>
   </div>
   
-  
-  
 ## Description
   Music on console with Go. Terminal music player inspired in MOC player
 ## Explanation
@@ -53,7 +51,16 @@
   * ##### MP3
   * ##### WAV
 ## How to install
+**Using Make on linux**
+
+**Required**
+  * go>=1.17
+  * make
+
+        sudo make install
+      
 ## How to run
+        mocg
 ## Music Samples Test
 |                     **Music Name**                                  |   **Artist Name**    |
 |---------------------------------------------------------------------|----------------------|
