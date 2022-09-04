@@ -1,7 +1,7 @@
 build:
-	go build -o bin/mocg ./cmd/main.go 
+	go build -o bin/mocg ./main.go 
 run:
-	go run ./cmd/main.go 
+	go run ./main.go 
 test-player:
 	go test ./internals/player/player.go ./internals/player/player_test.go  -v    
 test-repositories:
@@ -11,7 +11,7 @@ test-ui:
 test-decoder:
 	go test ./internals/decoder/decoder.go ./internals/decoder/decoder_test.go -v
 	
-install-linux:
+install:
 	make build;
 	cp ./bin/mocg /usr/bin;
 	
