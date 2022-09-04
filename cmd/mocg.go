@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/chipskein/mocg/internals/ui"
@@ -13,10 +14,12 @@ var mocgCmd = &cobra.Command{
 	Short: "Music on console with Go",
 	Long:  `Music on console with Go. Terminal music player inspired in MOC player`,
 	Run: func(cmd *cobra.Command, args []string) {
-		//verify if mocg subprocess is in background
-		//if in restore
-		//else start
-		ui.StartUI()
+		dirname, err := os.UserHomeDir()
+		if err != nil {
+			log.Fatal(err)
+		}
+		var default_dir = fmt.Sprintf("%s/Music", dirname)
+		ui.StartUI("Should just fail", default_dir, true)
 	},
 }
 

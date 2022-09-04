@@ -216,14 +216,14 @@ func (t *TUI) RenderUI() {
 	tui.Render(t.grid)
 }
 
-func StartUI() {
+func StartUI(CURRENT_DIRECTORY string, DEFAULT_DIRECTORY string, ShowHiddenFiles bool) {
 	if err := tui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
 	}
 	defer tui.Close()
 
 	var t = &TUI{}
-	t.repo = &repositories.LocalRepository{CURRENT_DIRECTORY: "../testAudios", DEFAULT_DIRECTORY: "/home/chipskein/Music", ShowHiddenFiles: false}
+	t.repo = &repositories.LocalRepository{CURRENT_DIRECTORY: CURRENT_DIRECTORY, DEFAULT_DIRECTORY: DEFAULT_DIRECTORY, ShowHiddenFiles: ShowHiddenFiles}
 
 	go t.RenderFileList()
 	go t.RenderVolumeMixer()
