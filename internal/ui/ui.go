@@ -109,45 +109,53 @@ func (t *TUI) HandleTUIEvents() {
 			case "<PageUp>":
 				t.filelist.ScrollHalfPageUp()
 			case "<Space>":
-				go t.player.PauseOrResume()
-				if !t.player.Ctrl.Paused {
-					t.progressBar.Title = "|| Paused"
-				} else {
-					t.progressBar.Title = "|> Playing"
+				if t.player != nil {
+					go t.player.PauseOrResume()
+					if !t.player.Ctrl.Paused {
+						t.progressBar.Title = "|| Paused"
+					} else {
+						t.progressBar.Title = "|> Playing"
+					}
+					t.RenderUI()
 				}
-				t.RenderUI()
 			case ",":
-				if t.volumeBar.Percent > 0 {
-					t.volumeBar.Percent--
-					go t.player.VolumeDown()
-					wg.Add(1)
-					wg.Done()
-				} else {
-					t.volumeBar.Percent = 0
-				}
-				t.volumeBar.Label = fmt.Sprintf("Volume %d%%", t.volumeBar.Percent)
-				t.RenderUI()
-			case ".":
-				if t.volumeBar.Percent < 100 {
-					t.volumeBar.Percent++
-					go t.player.VolumeUp()
-					wg.Add(1)
-					wg.Done()
-				} else {
-					t.volumeBar.Percent = 100
-				}
-				t.volumeBar.Label = fmt.Sprintf("Volume %d%%", t.volumeBar.Percent)
-				t.RenderUI()
-			case "m":
-				go t.player.Mute()
-				wg.Add(1)
-				wg.Done()
-				if !t.player.Volume.Silent {
-					t.volumeBar.Label = "MUTED"
-				} else {
+				if t.player != nil {
+					if t.volumeBar.Percent > 0 {
+						t.volumeBar.Percent--
+						go t.player.VolumeDown()
+						wg.Add(1)
+						wg.Done()
+					} else {
+						t.volumeBar.Percent = 0
+					}
 					t.volumeBar.Label = fmt.Sprintf("Volume %d%%", t.volumeBar.Percent)
+					t.RenderUI()
 				}
-				t.RenderUI()
+			case ".":
+				if t.player != nil {
+					if t.volumeBar.Percent < 100 {
+						t.volumeBar.Percent++
+						go t.player.VolumeUp()
+						wg.Add(1)
+						wg.Done()
+					} else {
+						t.volumeBar.Percent = 100
+					}
+					t.volumeBar.Label = fmt.Sprintf("Volume %d%%", t.volumeBar.Percent)
+					t.RenderUI()
+				}
+			case "m":
+				if t.player != nil {
+					go t.player.Mute()
+					wg.Add(1)
+					wg.Done()
+					if !t.player.Volume.Silent {
+						t.volumeBar.Label = "MUTED"
+					} else {
+						t.volumeBar.Label = fmt.Sprintf("Volume %d%%", t.volumeBar.Percent)
+					}
+					t.RenderUI()
+				}
 			case "<Resize>":
 				payload := e.Payload.(tui.Resize)
 				t.grid.SetRect(0, 0, payload.Width, payload.Height)
