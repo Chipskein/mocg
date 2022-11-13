@@ -3,13 +3,13 @@ build:
 run:
 	go run ./main.go 
 test-player:
-	go test ./internals/player/player.go ./internals/player/player_test.go  -v    
+	go test ./internal/player/player.go ./internal/player/player_test.go  -v    
 test-repositories:
-	go test ./internals/repositories/repositories.go ./internals/repositories/repositories_test.go -v
+	go test ./internal/repositories/repositories.go ./internal/repositories/repositories_test.go -v
 test-ui:
-	go test ./internals/ui/ui.go ./internals/ui/ui_test.go -v
+	go test ./internal/ui/ui.go ./internal/ui/ui_test.go -v
 test-decoder:
-	go test ./internals/decoder/decoder.go ./internals/decoder/decoder_test.go -v
+	go test ./internal/decoder/decoder.go ./internal/decoder/decoder_test.go -v
 install:
 	make build;
 	cp ./bin/mocg /usr/bin;

@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/chipskein/mocg/internals/ui"
+	"github.com/chipskein/mocg/internal/ui"
 	"github.com/spf13/cobra"
 )
 

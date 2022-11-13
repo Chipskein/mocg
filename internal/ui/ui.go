@@ -7,9 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/chipskein/mocg/internals/decoder"
-	"github.com/chipskein/mocg/internals/player"
-	"github.com/chipskein/mocg/internals/repositories"
+	"github.com/chipskein/mocg/internal/decoder"
+	"github.com/chipskein/mocg/internal/player"
+	"github.com/chipskein/mocg/internal/repositories"
 
 	tui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"

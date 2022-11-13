@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chipskein/mocg/internals/player"
-	"github.com/chipskein/mocg/internals/repositories"
+	"github.com/chipskein/mocg/internal/player"
+	"github.com/chipskein/mocg/internal/repositories"
 )
 
 var wg sync.WaitGroup
