@@ -82,4 +82,4 @@ Default Directory will be $HOME/Music
 * [termui](https://github.com/gizak/termui)
 
 ## License
-* [MIT](https://raw.githubusercontent.com/Chipskein/mocg/main/LICENSE?token=GHSAT0AAAAAABXMZE7Q6FPS4YQZUACJXPSGYYNICUA)
+* [MIT](https://raw.githubusercontent.com/Chipskein/mocg/main/LICENSE)
