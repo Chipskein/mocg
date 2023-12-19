@@ -1,6 +1,6 @@
 <div align="center">
   <h1>MOCG ( Music on console with Go )</h1>
-  <img src="https://images.squarespace-cdn.com/content/v1/5e10bdc20efb8f0d169f85f9/1590751925678-5XVSVXMC2BX38RNKKO19/music.png" style="width:160px;">
+  <img src="https://imgdb.net/storage/uploads/5803abc9b1e895e92e450159f64df734daed05a241fe560641749e9e739fa4c5.jpg" style="width:160px;">
 </div>
 
 ## Index
